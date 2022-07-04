@@ -1,10 +1,10 @@
 import 'package:app_eblendrang/models/instansi_model.dart';
 import 'dart:convert';
 
-List<DokumenModel> modelDokumenFromJson (String str) =>
-    List<DokumenModel>.from(json.decode(str).map((x) => DokumenModel.fromJson(x)));
-String modelDokumenToJson(List<DokumenModel> data) =>
-    json.encode(List<dynamic>.from(data.map((x) => x.toJson())));
+// List<DokumenModel> modelDokumenFromJson (String str) =>
+//     List<DokumenModel>.from(json.decode(str).map((x) => DokumenModel.fromJson(x)));
+// String modelDokumenToJson(List<DokumenModel> data) =>
+//     json.encode(List<dynamic>.from(data.map((x) => x.toJson())));
 
 class DokumenModel{
   int id_dokumen;
@@ -27,16 +27,16 @@ class DokumenModel{
     // this.updateAt,
   });
 
-  factory DokumenModel.fromJson(Map<String, dynamic> json) => DokumenModel(
-    id_dokumen: json["id_dokumen"],
-    keterangan_belanja: json["keterangan_belanja"],
-    no_spk: json["no_spk"],
-    no_bast: json["no_bast"],
-    alamat: json["alamat"],
-    instansi: Instansi.fromJson(json["instansi"]),
+  DokumenModel.fromJson(Map<String, dynamic> json){
+    id_dokumen: json['id_dokumen'];
+    keterangan_belanja: json['keterangan_belanja'];
+    no_spk: json['no_spk'];
+    no_bast: json['no_bast'];
+    alamat: json['alamat'];
+    instansi: Instansi.fromJson(json['instansi']);
     // createdAt: DateTime.parse(json["created_at"]),
     // updateAt: DateTime.parse(json["updated_at"]),
-  );
+  }
 
   Map<String, dynamic> toJson() => {
     "id_dokumen": id_dokumen,

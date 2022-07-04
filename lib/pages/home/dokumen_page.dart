@@ -2,8 +2,9 @@
 import 'dart:convert';
 import 'dart:math';
 
-import 'package:app_eblendrang/models/dokumen_model_backup2.dart';
+import 'package:app_eblendrang/models/dokumen_model.dart';
 import 'package:app_eblendrang/models/user_model.dart';
+import 'package:app_eblendrang/pages/detail_dokumen.dart';
 import 'package:app_eblendrang/pages/widgets/dokumen_title.dart';
 import 'package:app_eblendrang/providers/dokumen_provider.dart';
 import 'package:flutter/material.dart';
@@ -21,11 +22,12 @@ class DokumenPage extends StatefulWidget{
 }
 
 class _DokumenPageState extends State<DokumenPage>{
+
   // bool fileSpk = false;
   // bool fileBast = false;
   // bool foto = false;
   List _get = [];
-
+  // final List<DokumenModel> dokumens;
   @override
   void initState(){
     super.initState();
@@ -53,6 +55,7 @@ class _DokumenPageState extends State<DokumenPage>{
   Widget build(BuildContext context) {
     AuthProvider authProvider = Provider.of<AuthProvider>(context);
     UserModel user = authProvider.user;
+
     Widget header(){
       return Container(
         margin: EdgeInsets.only(
@@ -127,76 +130,88 @@ class _DokumenPageState extends State<DokumenPage>{
           right: marginLogin,
         ),
         child: ListView.builder(
-          shrinkWrap: true,
-          itemCount: _get.length,
-          itemBuilder: (BuildContext context, int index){
-            return new Card(
-              // margin: EdgeInsets.symmetric(
-              //   vertical: 20,
-              //   horizontal: 12,
-              // ),
-              // child: new Text(
-              //     'id Doc = ${_get[index]['id_dokumen']}'
-              // ),
-              elevation: 12,
-              color: backgroundColor13,
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(12),
-              ),
-              // child: Padding(
-              //   padding: EdgeInsets.all(35.0),
-              //
-              // ),
-              // child : SizedBox(
-              //   width: 300,
-              //   height: 80,
-              // ),
-              child: Row(
-                children: [
-                  Container(
-                    width: 40,
-                    height: 80,
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(5),
-                      image: DecorationImage(
-                        image: AssetImage(
-                          'assets/icon_goverment.png',
+            shrinkWrap: true,
+            itemCount: _get.length,
+            itemBuilder: (BuildContext context, int index){
+              return GestureDetector(
+                onTap: () {
+                  // Navigator.pushNamed(
+                  //     context, '/detailDokumen'
+                  // );
+                  print(_get[index]);
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context)=> DetailPage(dokumen : _get[index])),
+                  );
+                },
+                child: new Card(
+                  // margin: EdgeInsets.symmetric(
+                  //   vertical: 20,
+                  //   horizontal: 12,
+                  // ),
+                  // child: new Text(
+                  //     'id Doc = ${_get[index]['id_dokumen']}'
+                  // ),
+                  elevation: 12,
+                  color: backgroundColor13,
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(12),
+                  ),
+                  // child: Padding(
+                  //   padding: EdgeInsets.all(35.0),
+                  //
+                  // ),
+                  // child : SizedBox(
+                  //   width: 300,
+                  //   height: 80,
+                  // ),
+                  child: Row(
+                    children: [
+                      Container(
+                        width: 40,
+                        height: 80,
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(5),
+                          image: DecorationImage(
+                            image: AssetImage(
+                              'assets/icon_goverment.png',
+                            ),
+                          ),
                         ),
                       ),
-                    ),
-                  ),
-                  SizedBox(
-                    width: 12,
-                  ),
-                  Expanded(
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          '${_get[index]['keterangan_belanja']}',
-                          style: primaryTextStyle.copyWith(
-                            fontWeight: semiBold,
-                          ),
+                      SizedBox(
+                        width: 12,
+                      ),
+                      Expanded(
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              '${_get[index]['keterangan_belanja']}',
+                              style: primaryTextStyle.copyWith(
+                                fontWeight: semiBold,
+                              ),
+                            ),
+                            Text(
+                              '${_get[index]['instansi']['nama_instansi']}',
+                              style: subtitleTextStyle.copyWith(
+                                fontWeight: light,
+                              ),
+                            ),
+                          ],
                         ),
-                        Text(
-                          '${_get[index]['instansi']['nama_instansi']}',
-                          style: subtitleTextStyle.copyWith(
-                            fontWeight: light,
-                          ),
+                      ),
+                      Text(
+                        '3 Item',
+                        style: inputStyle.copyWith(
+                          fontSize: 12,
                         ),
-                      ],
-                    ),
+                      ),
+                    ],
                   ),
-                  Text(
-                    '3 Item',
-                    style: inputStyle.copyWith(
-                      fontSize: 12,
-                    ),
-                  ),
-                ],
-              ),
-            );
-          }
+                ),
+              );
+            }
         ),
 
       );

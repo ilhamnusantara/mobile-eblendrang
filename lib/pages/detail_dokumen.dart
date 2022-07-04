@@ -1,8 +1,14 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:app_eblendrang/themes.dart';
 import 'package:intl/intl.dart';
+import 'package:http/http.dart' as http;
 
 class DetailPage extends StatefulWidget{
+  final dokumen = [];
+  DetailPage({Key key, dokumen}) : super(key: key) {
+  }
   @override
   State<StatefulWidget> createState(){
     return _DetailPage();
@@ -10,14 +16,40 @@ class DetailPage extends StatefulWidget{
 }
 
 class _DetailPage extends State<DetailPage>{
+
+  List data = widget.dokumen;
+  @override
+  void initState(){
+    super.initState();
+    dateInput.text = "";
+    dateInput2.text = "";
+    // _getData();
+  }
+  // Future _getData() async {
+  //   try{
+  //     final response = await http.get(Uri.parse(
+  //       // "http://172.20.10.5/flutter/list.php"
+  //         "http://e-blendrang.id/api/dokumens"
+  //     ));
+  //     if (response.statusCode == 200){
+  //       final data = jsonDecode(response.body)['data'];
+  //       setState(() {
+  //         dokumen = data;
+  //         print(data);
+  //       });
+  //     }
+  //   } catch (e){
+  //     print(e);
+  //   }
+  // }
   TextEditingController dateInput = TextEditingController();
   TextEditingController dateInput2 = TextEditingController();
   @override
-  void initState() {
-    dateInput.text = "";
-    dateInput2.text = "";//set the initial value of text field
-    // super.initState();
-  }
+  // void initState() {
+  //   // dateInput.text = "";
+  //   // dateInput2.text = "";//set the initial value of text field
+  //   // super.initState();
+  // }
   @override
   Widget build(BuildContext context) {
     Widget header(){
@@ -60,7 +92,7 @@ class _DetailPage extends State<DetailPage>{
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(
-                'Nama Instansi',
+                '${dokumen['keterangan_belanja']}',
               style: primaryTextStyle.copyWith(
                 fontSize: 14,
               ),
@@ -88,7 +120,9 @@ class _DetailPage extends State<DetailPage>{
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(
-              'Nama Instansi',
+              'hallo',
+              // '${dokumen['keterangan_belanja']}',
+              // '${dokumen[index]['keterangan_belanja']}',
               style: primaryTextStyle.copyWith(
                 fontSize: 16,
                 fontWeight: medium,

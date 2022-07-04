@@ -26,13 +26,6 @@ class _DokumenPageState extends State<DokumenPage>{
   // bool foto = false;
   List _get = [];
 
-  final _lightColors = [
-    backgroundColor16,
-    backgroundColor13,
-    backgroundColor12,
-    Colors.pinkAccent.shade100,
-  ];
-
   @override
   void initState(){
     super.initState();
@@ -58,93 +51,177 @@ class _DokumenPageState extends State<DokumenPage>{
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    AuthProvider authProvider = Provider.of<AuthProvider>(context);
+    UserModel user = authProvider.user;
 
-      backgroundColor:
-      Colors.orange.shade200,
-      body: _get.length != 0
-      //we use masonry grid to make masonry card style
-          ? MasonryGridView.count(
-        crossAxisCount: 2,
-        itemCount: _get.length,
-        itemBuilder: (context, index) {
-          return GestureDetector(
-            // onTap: () {
-            //   Navigator.push(
-            //       context,
-            //       //routing into edit page
-            //       //we pass the id note
-            //       MaterialPageRoute(builder: (context) => Edit(id: _get[index]['id'],)));
-            // },
-            child: Card(
-              //make random color to eveery card
-              color: _lightColors[index % _lightColors.length],
-              child: Container(
-                //make 2 different height
-                constraints:
-                BoxConstraints(minHeight: 15),
-                padding: EdgeInsets.all(15),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      'id Doc = ${_get[index]['id_dokumen']}',
-                      style: TextStyle(color: Colors.black),
+    Widget header(){
+      return Container(
+        margin: EdgeInsets.only(
+          top: 30,
+          left: marginLogin,
+          right: marginLogin,
+        ),
+        child: Row(
+          children: [
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    'Hallo, ${user.name}',
+                    style: primaryTextStyle.copyWith(
+                      fontSize: 24,
+                      fontWeight: semiBold,
                     ),
-                    SizedBox(height: 10),
-                    Text(
-                      'keterangan Belanja = ${_get[index]['keterangan_belanja']}',
-                      style: TextStyle(
-                        color: Colors.black,
-                        fontSize: 20,
-                        fontWeight: FontWeight.bold,
-                      ),
+                  ),
+                  Text(
+                    '@${user.username}',
+                    style: subtitleTextStyle.copyWith(
+                      fontSize: 16,
                     ),
-                    SizedBox(height: 5,),
-                    Text(
-                      'update at = ${_get[index]['updated_at']}',
-                      style: TextStyle(
-                        color: Colors.black,
-                        fontSize: 15,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                    SizedBox(height: 5,),
-                    Text(
-                      'instansi = ${_get[index]['instansi']['nama_instansi']}',
-                      style: TextStyle(
-                        color: Colors.black,
-                        fontSize: 15,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                  ],
+                  ),
+                ],
+              ),
+            ),
+            GestureDetector(
+              onTap: (){
+                Navigator.pushNamed(
+                  context,
+                  '/edit-profile',
+                );
+              },
+              child: Container (
+                width: 54,
+                height: 54,
+                decoration: BoxDecoration(
+                  shape: BoxShape.circle,
+                  image: DecorationImage(image: AssetImage('assets/icon_email.png'),),
                 ),
               ),
             ),
-          );
-        },
-      )
-          : Center(
+          ],
+        ),
+      );
+    }
+    Widget titlePage(){
+      return Container(
+        margin : EdgeInsets.only(
+          top: 50,
+          left: marginLogin,
+          right: marginLogin,
+          bottom: 14,
+        ),
         child: Text(
-          "No Data Available",
-          style: TextStyle(
-            color: primaryColor,
-            fontSize: 20,
-            fontWeight: FontWeight.bold,
+          'Informasi Instansi belum upload file',
+          style: primaryTextStyle.copyWith(
+            fontSize: 18,
+            fontWeight: semiBold,
           ),
         ),
-      ),
-      // floatingActionButton: FloatingActionButton(
-      //   backgroundColor: primaryColor,
-      //   child: Icon(Icons.arrow_back),
-      //   onPressed: () {
-      //     Navigator.push(
-      //         context,
-      //         //routing into home page
-      //         MaterialPageRoute(builder: (context) => HomePage()));
-      //   },
-      // ),
+      );
+    }
+    Widget item(){
+      return Container(
+        margin: EdgeInsets.only(
+          top :14,
+          left: marginLogin,
+          right: marginLogin,
+        ),
+        child: ListView.builder(
+            shrinkWrap: true,
+            itemCount: _get.length,
+            itemBuilder: (BuildContext context, int index){
+              return GestureDetector(
+                onTap: () {
+                  // Navigator.pushNamed(
+                  //     context, '/detailDokumen'
+                  // );
+                  // Navigator.push(
+                  //   context,
+                  //   MaterialPageRoute(builder: (context)=> DetailPage(data)),
+                  // );
+                },
+                child: new Card(
+                  // margin: EdgeInsets.symmetric(
+                  //   vertical: 20,
+                  //   horizontal: 12,
+                  // ),
+                  // child: new Text(
+                  //     'id Doc = ${_get[index]['id_dokumen']}'
+                  // ),
+                  elevation: 12,
+                  color: backgroundColor13,
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(12),
+                  ),
+                  // child: Padding(
+                  //   padding: EdgeInsets.all(35.0),
+                  //
+                  // ),
+                  // child : SizedBox(
+                  //   width: 300,
+                  //   height: 80,
+                  // ),
+                  child: Row(
+                    children: [
+                      Container(
+                        width: 40,
+                        height: 80,
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(5),
+                          image: DecorationImage(
+                            image: AssetImage(
+                              'assets/icon_goverment.png',
+                            ),
+                          ),
+                        ),
+                      ),
+                      SizedBox(
+                        width: 12,
+                      ),
+                      Expanded(
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              '${_get[index]['keterangan_belanja']}',
+                              style: primaryTextStyle.copyWith(
+                                fontWeight: semiBold,
+                              ),
+                            ),
+                            Text(
+                              '${_get[index]['instansi']['nama_instansi']}',
+                              style: subtitleTextStyle.copyWith(
+                                fontWeight: light,
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                      Text(
+                        '3 Item',
+                        style: inputStyle.copyWith(
+                          fontSize: 12,
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              );
+            }
+        ),
+
+      );
+    }
+    return ListView(
+      children: [
+        header(),
+        // categories(),
+        // popularProductsTitle(),
+        // popularProducts(),
+        titlePage(),
+        item(),
+      ],
     );
   }
 }

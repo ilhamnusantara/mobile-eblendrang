@@ -1,16 +1,18 @@
-import 'package:app_eblendrang/models/dokumen_model_backup2.dart';
+
+import 'package:app_eblendrang/models/dokumen_model.dart';
 import 'package:app_eblendrang/themes.dart';
 import 'package:flutter/material.dart';
 
 class DataTitle extends StatefulWidget{
   String keterangan_belanja, no_spk, no_bast, alamat;
-
-  DataTitle({
-    this.keterangan_belanja,
-    this.no_spk,
-    this.no_bast,
-    this.alamat
-  });
+  final DokumenModel dokumen;
+  DataTitle(this.dokumen);
+  // DataTitle({
+  //   this.keterangan_belanja,
+  //   this.no_spk,
+  //   this.no_bast,
+  //   this.alamat
+  // });
 
   @override
   State<DataTitle> createState() => _DataTitleState();

@@ -1,88 +1,93 @@
-import 'package:app_eblendrang/models/dokumen_model_backup2.dart';
+
+import 'package:app_eblendrang/models/dokumen_model.dart';
 import 'package:app_eblendrang/themes.dart';
 import 'package:flutter/material.dart';
 
-class DataTitle extends StatelessWidget{
+class DataTitle extends StatefulWidget{
+  String keterangan_belanja, no_spk, no_bast, alamat;
   final DokumenModel dokumen;
   DataTitle(this.dokumen);
+  // DataTitle({
+  //   this.keterangan_belanja,
+  //   this.no_spk,
+  //   this.no_bast,
+  //   this.alamat
+  // });
+
+  @override
+  State<DataTitle> createState() => _DataTitleState();
+}
+
+class _DataTitleState extends State<DataTitle> {
   @override
   Widget build(BuildContext context){
-    return Container(
-      margin: EdgeInsets.only(top: 15),
-      padding: EdgeInsets.symmetric(
-        vertical: 20,
-        horizontal: 12,
-      ),
-      decoration: BoxDecoration(
-        color: backgroundColor13,
-        borderRadius: BorderRadius.circular(12),
-      ),
-      child: Row(
-        children: [
-          Container(
-            width: 25,
-            height: 25,
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(5),
-              image: DecorationImage(
-                image: AssetImage(
-                  'assets/icon_data.png',
-                ),
+    return ListView(
+      children: <Widget>[
+        Container(
+          padding: EdgeInsets.all(16),
+          child: Card(
+            child: Padding(
+              padding: EdgeInsets.all(8),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: <Widget>[
+                  Container(
+                    child: Text(
+                      'With One Class',
+                      style: TextStyle(
+                          fontSize: 20, fontWeight: FontWeight.bold),
+                    ),
+                  ),
+                  Container(
+                    child: Column(
+                      children: <Widget>[
+                        Text(
+                          "${widget.keterangan_belanja}",
+                          style: TextStyle(
+                              fontSize: 24,
+                              color: Colors.green,
+                              fontWeight: FontWeight.bold),
+                        ),
+                        Text(
+                          "Email : ${widget.no_spk}",
+                          style: TextStyle(fontSize: 16),
+                        ),
+                        Text(
+                          "Phone : ${widget.no_bast}",
+                          style: TextStyle(fontSize: 16),
+                        ),
+                        Text(
+                          "City : ${widget.alamat}",
+                          style: TextStyle(fontSize: 16),
+                        ),
+                      ],
+                    ),
+                  )
+                ],
               ),
             ),
           ),
-          SizedBox(
-            width: 12,
-          ),
-          Expanded(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  dokumen.keterangan_belanja,
-                  style: primaryTextStyle.copyWith(
-                    fontWeight: semiBold,
-                  ),
-                  overflow: TextOverflow.ellipsis,
-                ),
-                SizedBox(
-                  height: 2,
-                ),
-                Text(
-                    'Kelurahan Kalijaten',
-                  style: subtitleTextStyle.copyWith(
-                    fontSize: 12,
-                    fontWeight: reguler,
-                  ),
-                ),
-              ],
-            ),
-          ),
-          SizedBox(
-            width: 12,
-          ),
-          Container(
-            child : Ink(
-              decoration: ShapeDecoration(
-                color: Colors.black,
-                shape: CircleBorder(),
-              ),
-              child: IconButton(
-                icon: Container(
-                  // margin: EdgeInsets.only(top: 50, bottom: 50),
-                  child: Image.asset(
-                    'assets/icon_information.png',
-                    width: 27,
-                  ),
-                ),
-                onPressed: () {
-                  Navigator.pushNamed(context, '/detailDokumen');
-                },
-              ),
-            ),
-          ),
-        ],
-      ),
+        ),
+        SizedBox(
+          height: 40,
+        ),
+        // Container(
+        //   child: Column(
+        //     children: <Widget>[
+        //       new NameDetail(
+        //         name: widget.dName,
+        //         email: widget.dEmail,
+        //       ),
+        //       new BagianIcon(),
+        //       new BagianContact(
+        //         phone: widget.dPhone,
+        //         city: widget.dCity,
+        //         postal: widget.dZip,
+        //       )
+        //     ],
+        //   ),
+        // ),
+      ],
     );
   }
 }

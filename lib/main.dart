@@ -34,7 +34,7 @@ class MyApp extends StatelessWidget {
           // '/': (context) => SplashScreen(),
           '/sign-in': (context) => SigninPage(),
           '/home': (context) => MainPage(),
-          '/detailDokumen' : (context) => DetailPage(),
+          // '/detailDokumen' : (context) => DetailPage(),
           '/edit-profile' : (context) => EditProfilePage(),
           '/addAll' : (context) => AddData(),
           // '/coba' : (context) => coba(),
