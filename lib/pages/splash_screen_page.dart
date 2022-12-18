@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:app_eblendrang/pages/sign_in_page.dart';
 import 'package:provider/provider.dart';
 import 'package:splashscreen/splashscreen.dart';
+import 'package:app_eblendrang/pages/addData_page.dart';
 
 class SpashScreenPage extends StatefulWidget {
   @override
@@ -27,7 +28,8 @@ class _SpashScreenPageState extends State<SpashScreenPage> {
     return new SplashScreen(
       backgroundColor: backgroundColor15,
       seconds: 3,
-      navigateAfterSeconds: SigninPage(),
+      // navigateAfterSeconds: SigninPage(),
+      navigateAfterSeconds: AddData(),
       title: new Text('E-Blendrang Kecamatan Taman',
         textScaleFactor: 1.8,
         style: TextStyle(

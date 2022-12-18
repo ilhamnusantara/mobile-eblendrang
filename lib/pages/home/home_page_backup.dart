@@ -82,7 +82,7 @@ class HomePage extends StatelessWidget{
     Widget item(){
       return Container(
         margin: EdgeInsets.only(
-          top :14,
+          top : 30,
           left: marginLogin,
           right: marginLogin,
         ),

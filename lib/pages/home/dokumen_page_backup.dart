@@ -2,8 +2,9 @@
 import 'dart:convert';
 import 'dart:math';
 
-import 'package:app_eblendrang/models/dokumen_model_backup2.dart';
+import 'package:app_eblendrang/models/dokumen_model.dart';
 import 'package:app_eblendrang/models/user_model.dart';
+import 'package:app_eblendrang/pages/detail_dokumen.dart';
 import 'package:app_eblendrang/pages/widgets/dokumen_title.dart';
 import 'package:app_eblendrang/providers/dokumen_provider.dart';
 import 'package:flutter/material.dart';
@@ -21,32 +22,51 @@ class DokumenPage extends StatefulWidget{
 }
 
 class _DokumenPageState extends State<DokumenPage>{
+
   // bool fileSpk = false;
   // bool fileBast = false;
   // bool foto = false;
-  List _get = [];
-
+  // final List<DokumenModel> dokumens;
   @override
   void initState(){
     super.initState();
     _getData();
   }
-  Future _getData() async {
+  List<DokumenModel> allDokumens = [];
+  List<DokumenModel> filteredDokumens = [];
+
+  Future<void> _getData() async {
     try{
       final response = await http.get(Uri.parse(
-        // "http://172.20.10.5/flutter/list.php"
           "http://e-blendrang.id/api/dokumens"
       ));
       if (response.statusCode == 200){
-        final data = jsonDecode(response.body)['data'];
+        final data = jsonDecode(response.body)['data'] as List<dynamic>;
         setState(() {
-          _get = data;
+          allDokumens = [];
+          allDokumens = data.map((e) => DokumenModel.fromJson(e)).toList();
+          filteredDokumens = allDokumens;
+          // _get = data;
           print(data);
         });
       }
     } catch (e){
       print(e);
     }
+  }
+
+  void _runFilter(String searchKeyword){
+    List<DokumenModel> results = [];
+    if(searchKeyword.isEmpty) {
+      results = allDokumens;
+    } else {
+      results = allDokumens.where((element) => element.keterangan_belanja.toLowerCase().contains(searchKeyword.toLowerCase())).toList();
+    }
+
+    // refresh the UI
+    setState(() {
+      filteredDokumens = results;
+    });
   }
 
   @override
@@ -109,7 +129,6 @@ class _DokumenPageState extends State<DokumenPage>{
           top: 50,
           left: marginLogin,
           right: marginLogin,
-          bottom: 14,
         ),
         child: Text(
           'Informasi Instansi belum upload file',
@@ -120,50 +139,47 @@ class _DokumenPageState extends State<DokumenPage>{
         ),
       );
     }
+    Widget search(){
+      return Container(
+        margin: EdgeInsets.only(
+          top :8,
+          left: marginLogin,
+          right: marginLogin,
+        ),
+        child: TextField(
+          // onChanged: (value) =>,
+          decoration: const InputDecoration(
+              labelText: 'Search Pekerjaan', suffixIcon: Icon(Icons.search)
+          ),
+        ),
+      );
+    }
     Widget item(){
       return Container(
         margin: EdgeInsets.only(
-          top :14,
+          top :10,
           left: marginLogin,
           right: marginLogin,
         ),
         child: ListView.builder(
             shrinkWrap: true,
-            itemCount: _get.length,
-            itemBuilder: (BuildContext context, int index){
+            itemCount: filteredDokumens.length,
+            itemBuilder: (BuildContext context, index){
               return GestureDetector(
                 onTap: () {
-                  // Navigator.pushNamed(
-                  //     context, '/detailDokumen'
-                  // );
-                  // Navigator.push(
-                  //   context,
-                  //   MaterialPageRoute(builder: (context)=> DetailPage(data)),
-                  // );
+                  Navigator.of(context).pushNamed('/detailDokumen', arguments: jsonEncode(filteredDokumens[index]));
                 },
                 child: new Card(
-                  // margin: EdgeInsets.symmetric(
-                  //   vertical: 20,
-                  //   horizontal: 12,
-                  // ),
-                  // child: new Text(
-                  //     'id Doc = ${_get[index]['id_dokumen']}'
-                  // ),
                   elevation: 12,
                   color: backgroundColor13,
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(12),
                   ),
-                  // child: Padding(
-                  //   padding: EdgeInsets.all(35.0),
-                  //
-                  // ),
-                  // child : SizedBox(
-                  //   width: 300,
-                  //   height: 80,
-                  // ),
                   child: Row(
                     children: [
+                      SizedBox(
+                        width: 15,
+                      ),
                       Container(
                         width: 40,
                         height: 80,
@@ -184,13 +200,13 @@ class _DokumenPageState extends State<DokumenPage>{
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Text(
-                              '${_get[index]['keterangan_belanja']}',
+                              '${filteredDokumens[index].keterangan_belanja}',
                               style: primaryTextStyle.copyWith(
                                 fontWeight: semiBold,
                               ),
                             ),
                             Text(
-                              '${_get[index]['instansi']['nama_instansi']}',
+                              '${filteredDokumens[index].instansi.nama_instansi}',
                               style: subtitleTextStyle.copyWith(
                                 fontWeight: light,
                               ),
@@ -198,11 +214,16 @@ class _DokumenPageState extends State<DokumenPage>{
                           ],
                         ),
                       ),
-                      Text(
-                        '3 Item',
-                        style: inputStyle.copyWith(
-                          fontSize: 12,
+                      Container (
+                        width: 23,
+                        height: 23,
+                        decoration: BoxDecoration(
+                          shape: BoxShape.circle,
+                          image: DecorationImage(image: AssetImage('assets/icon_information.png'),),
                         ),
+                      ),
+                      SizedBox(
+                        width: 15,
                       ),
                     ],
                   ),
@@ -216,10 +237,8 @@ class _DokumenPageState extends State<DokumenPage>{
     return ListView(
       children: [
         header(),
-        // categories(),
-        // popularProductsTitle(),
-        // popularProducts(),
         titlePage(),
+        search(),
         item(),
       ],
     );

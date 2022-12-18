@@ -1,11 +1,48 @@
+import 'dart:convert';
+import 'package:app_eblendrang/models/instansi_model.dart';
 import 'package:app_eblendrang/models/user_model.dart';
 import 'package:app_eblendrang/pages/widgets/instansi_title.dart';
 import 'package:app_eblendrang/providers/auth_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:app_eblendrang/themes.dart';
+import 'package:flutter/rendering.dart';
 import 'package:provider/provider.dart';
+import 'package:http/http.dart' as http;
 
-class HomePage extends StatelessWidget{
+class HomePage extends StatefulWidget{
+  HomePage({Key key}) : super(key: key);
+  @override
+  State<HomePage> createState() => _HomePageState();
+}
+
+class _HomePageState extends State<HomePage> {
+  @override
+  void initState(){
+    super.initState();
+    _getInstansi();
+  }
+  List<InstansiModel> allinstansis = [];
+
+  Future<void> _getInstansi() async {
+    try{
+      final response = await http.get(Uri.parse(
+          "http://e-blendrang.id/api/dokumenValue"
+      ));
+      if (response.statusCode == 200){
+        final data = jsonDecode(response.body)['data'] as List<dynamic>;
+        setState(() {
+          allinstansis = [];
+          allinstansis = data.map((e) => InstansiModel.fromJson(e)).toList();
+          // filteredDokumens = allDokumens;
+          // _get = data;
+          print(data);
+        });
+      }
+    } catch (e){
+      print(e);
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     AuthProvider authProvider = Provider.of<AuthProvider>(context);
@@ -82,16 +119,74 @@ class HomePage extends StatelessWidget{
     Widget item(){
       return Container(
         margin: EdgeInsets.only(
-          top : 30,
+          top : 8,
           left: marginLogin,
           right: marginLogin,
         ),
-        child: Column(
-          children: [
-            InstansiTitle(),
-            InstansiTitle(),
-            InstansiTitle(),
-          ],
+        child: ListView.builder(
+            shrinkWrap: true,
+            itemCount: allinstansis.length,
+            padding: new EdgeInsets.only(
+              top: 10,
+            ),
+            itemBuilder: (BuildContext context, index){
+              return GestureDetector(
+                onTap: () {
+                  Navigator.of(context).pushNamed('/detailDokumen', arguments: jsonEncode(allinstansis[index]));
+                },
+                child: new Card(
+                  elevation: 12,
+                  color: backgroundColor13,
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(12),
+                  ),
+                  child: Row(
+                    children: [
+                      SizedBox(
+                        width: 15,
+                      ),
+                      Container(
+                        width: 40,
+                        height: 80,
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(5),
+                          image: DecorationImage(
+                            image: AssetImage(
+                              'assets/icon_goverment.png',
+                            ),
+                          ),
+                        ),
+                      ),
+                      SizedBox(
+                        width: 15,
+                      ),
+                      Expanded(
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              '${allinstansis[index].nama_instansi}',
+                              style: primaryTextStyle.copyWith(
+                                fontWeight: semiBold,
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                      Text(
+                        '${allinstansis[index].data_null} Item',
+                        style: inputStyle.copyWith(
+                          fontSize: 12,
+                        ),
+                      ),
+                      SizedBox(
+                        width: 15,
+                      )
+                    ],
+                  ),
+                ),
+              );
+            },
         ),
 
       );

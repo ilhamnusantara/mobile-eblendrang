@@ -5,6 +5,7 @@ import 'package:app_eblendrang/pages/detail_dokumen.dart';
 import 'package:app_eblendrang/pages/edit_profile.dart';
 import 'package:app_eblendrang/pages/home/dokumen_page.dart';
 import 'package:app_eblendrang/pages/home/main_page.dart';
+import 'package:app_eblendrang/pages/pdf.dart';
 import 'package:app_eblendrang/pages/splash_page.dart';
 import 'package:app_eblendrang/pages/sign_in_page.dart';
 import 'package:app_eblendrang/providers/auth_provider.dart';
@@ -34,9 +35,10 @@ class MyApp extends StatelessWidget {
           // '/': (context) => SplashScreen(),
           '/sign-in': (context) => SigninPage(),
           '/home': (context) => MainPage(),
-          // '/detailDokumen' : (context) => DetailPage(),
+          '/detailDokumen' : (context) => DetailPage(),
           '/edit-profile' : (context) => EditProfilePage(),
           '/addAll' : (context) => AddData(),
+          '/pdf' : (context) => Pdf(),
           // '/coba' : (context) => coba(),
         },
       ),

@@ -50,19 +50,21 @@ class _DetailPage extends State<DetailPage>{
   }
   TextEditingController dateInput = TextEditingController();
   TextEditingController dateInput2 = TextEditingController();
-  File _foto;
-  PickedFile _pickedFile;
-  final _picker = ImagePicker();
-
+  File _image;
   Future<void> _chooseImageFromCamera() async
   {
-    _pickedFile = await _picker.getImage(source: ImageSource.camera);
-    if(_pickedFile != null)
-      {
-        setState(() {
-          _foto = File(_pickedFile.path);
-        });
+    final pickedFile = await ImagePicker().getImage(source: ImageSource.camera);
+    if(pickedFile != null)
+    {
+      _image = File(pickedFile.path);
+      var isUploaded = await _uploadFoto(dokumen.id_dokumen, _image);
+      if(isUploaded){
+        print('uploaded');
+      }else{
+        print('something went wrong !');
       }
+      print('image selected');
+    }
   }
   @override
   Future<bool> _uploadFoto(int id_dokumen, File foto) async
@@ -117,6 +119,36 @@ class _DetailPage extends State<DetailPage>{
         foregroundColor: blck,
       );
     }
+    Widget tesnameInput(){
+      return Container(
+        margin: EdgeInsets.only(
+          top: 30,
+        ),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(
+              'loha',
+              // '${dokumen['keterangan_belanja']}',
+              style: primaryTextStyle.copyWith(
+                fontSize: 14,
+              ),
+            ),
+            TextFormField(
+              decoration: InputDecoration(
+                hintText: 'Kelurahan Kalijaten',
+                hintStyle: subtitleTextStyle,
+                enabledBorder: UnderlineInputBorder(
+                  borderSide: BorderSide(
+                    color: grayChoose,
+                  ),
+                ),
+              ),
+            ),
+          ],
+        ),
+      );
+    }
 
     Widget nameInstansi(){
       return Container(
@@ -154,7 +186,7 @@ class _DetailPage extends State<DetailPage>{
                           style: primaryTextStyle,
                           decoration: InputDecoration(
                             hintText: ''+(dokumen.instansi.nama_instansi),
-                            // hintStyle: inputStyle,
+                            hintStyle: inputStyle,
                             enabledBorder: UnderlineInputBorder(
                               borderSide: BorderSide(
                                 color: grayChoose,
@@ -257,10 +289,10 @@ class _DetailPage extends State<DetailPage>{
                           onTap: () async{
                             DateTime dateSPK = dokumen.tanggal_spk;
                             dateSPK = await showDatePicker(
-                                context: context,
-                                initialDate: dokumen.tanggal_spk,
-                                firstDate: DateTime(2000),
-                                lastDate: DateTime(2101),
+                              context: context,
+                              initialDate: dokumen.tanggal_spk,
+                              firstDate: DateTime(2000),
+                              lastDate: DateTime(2101),
                             );
                             if(dateSPK != null){
                               print(dateSPK);
@@ -375,7 +407,7 @@ class _DetailPage extends State<DetailPage>{
                             );
                             if(dateBAST != null){
                               print(dateBAST);
-                                String formattedDate = DateFormat('dd-MM-yyyy').format(dateBAST);
+                              String formattedDate = DateFormat('dd-MM-yyyy').format(dateBAST);
                               print(formattedDate);
                               setState((){
                                 dateInput2.text = formattedDate;
@@ -406,11 +438,9 @@ class _DetailPage extends State<DetailPage>{
           children: [
             Expanded(
                 child: TextButton(
-                  onPressed: () {
-                    Navigator.pushNamed(context, '/pdf');
-                  },
+                  onPressed: () {},
                   child: Text(
-                      "File SPK",
+                    "File SPK",
                     style: secondTextStyle.copyWith(
                       fontSize: 16,
                       fontWeight: medium,

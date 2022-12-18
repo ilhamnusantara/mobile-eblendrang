@@ -40,28 +40,3 @@ class DokumenService{
     }
   }
 }
-
-// List _get = [];
-//
-// @override
-// void initState(){
-//   super.initState();
-//   _getData();
-// }
-// Future _getData() async {
-//   try{
-//     final response = await http.get(Uri.parse(
-//       // "http://172.20.10.5/flutter/list.php"
-//         "http://e-blendrang.id/api/dokumens"
-//     ));
-//     if (response.statusCode == 200){
-//       final data = jsonDecode(response.body)['data'];
-//       setState(() {
-//         _get = data;
-//         print(data);
-//       });
-//     }
-//   } catch (e){
-//     print(e);
-//   }
-// }

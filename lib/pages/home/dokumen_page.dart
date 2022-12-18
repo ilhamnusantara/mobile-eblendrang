@@ -26,29 +26,50 @@ class _DokumenPageState extends State<DokumenPage>{
   // bool fileSpk = false;
   // bool fileBast = false;
   // bool foto = false;
-  List _get = [];
   // final List<DokumenModel> dokumens;
-  @override
-  void initState(){
-    super.initState();
-    _getData();
-  }
-  Future _getData() async {
+
+  List<DokumenModel> allDokumens = [];
+  List<DokumenModel> filteredDokumens = [];
+  Future<void> _getData() async {
     try{
       final response = await http.get(Uri.parse(
-        // "http://172.20.10.5/flutter/list.php"
           "http://e-blendrang.id/api/dokumens"
       ));
       if (response.statusCode == 200){
-        final data = jsonDecode(response.body)['data'];
+        final data = jsonDecode(response.body)['data'] as List<dynamic>;
         setState(() {
-          _get = data;
+          allDokumens = [];
+          allDokumens = data.map((e) => DokumenModel.fromJson(e)).toList();
+          // _get = data;
           print(data);
         });
       }
     } catch (e){
       print(e);
     }
+  }
+  @override
+  void initState(){
+    super.initState();
+    _getData();
+  }
+
+  void _runFilter(String text){
+    filteredDokumens.clear();
+    if(text.isEmpty){
+      setState(() {});
+      return;
+    }
+    allDokumens.forEach((data){
+      if(data.keterangan_belanja
+      .toString()
+      .toLowerCase()
+      .contains(text.toLowerCase().toString())){
+        filteredDokumens.add(data);
+      }
+    });
+    setState(() {});
+
   }
 
   @override
@@ -111,7 +132,6 @@ class _DokumenPageState extends State<DokumenPage>{
           top: 50,
           left: marginLogin,
           right: marginLogin,
-          bottom: 14,
         ),
         child: Text(
           'Informasi Instansi belum upload file',
@@ -122,51 +142,118 @@ class _DokumenPageState extends State<DokumenPage>{
         ),
       );
     }
-    Widget item(){
+    Widget search(){
       return Container(
         margin: EdgeInsets.only(
-          top :14,
+          top :8,
           left: marginLogin,
           right: marginLogin,
         ),
-        child: ListView.builder(
+        child: TextField(
+          onChanged: _runFilter,
+          decoration: const InputDecoration(
+            labelText: 'Search Pekerjaan', suffixIcon: Icon(Icons.search)
+          ),
+        ),
+      );
+    }
+    Widget item(){
+      return Container(
+        margin: EdgeInsets.only(
+          top :10,
+          left: marginLogin,
+          right: marginLogin,
+        ),
+        child: filteredDokumens.length == 0
+          ? ListView.builder(
             shrinkWrap: true,
-            itemCount: _get.length,
+            itemCount: allDokumens.length,
+            itemBuilder: (BuildContext context, int index){
+              return GestureDetector(
+                  onTap: () {
+                    Navigator.of(context).pushNamed('/detailDokumen', arguments: jsonEncode(allDokumens[index]));
+                  },
+                  child: new Card(
+                    elevation: 12,
+                    color: backgroundColor13,
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(12),
+                    ),
+                    child: Row(
+                      children: [
+                        SizedBox(
+                          width: 15,
+                        ),
+                        Container(
+                          width: 40,
+                          height: 80,
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(5),
+                            image: DecorationImage(
+                              image: AssetImage(
+                                'assets/icon_goverment.png',
+                              ),
+                            ),
+                          ),
+                        ),
+                        SizedBox(
+                          width: 12,
+                        ),
+                        Expanded(
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                '${allDokumens[index].keterangan_belanja}',
+                                style: primaryTextStyle.copyWith(
+                                  fontWeight: semiBold,
+                                ),
+                              ),
+                              Text(
+                                '${allDokumens[index].instansi.nama_instansi}',
+                                style: subtitleTextStyle.copyWith(
+                                  fontWeight: light,
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                        Container (
+                          width: 23,
+                          height: 23,
+                          decoration: BoxDecoration(
+                            shape: BoxShape.circle,
+                            image: DecorationImage(image: AssetImage('assets/icon_information.png'),),
+                          ),
+                        ),
+                        SizedBox(
+                          width: 15,
+                        ),
+                      ],
+                    ),
+                  ),
+                );
+            }
+        )
+       : ListView.builder(
+            shrinkWrap: true,
+            itemCount: filteredDokumens.length,
             itemBuilder: (BuildContext context, int index){
               return GestureDetector(
                 onTap: () {
-                  // Navigator.pushNamed(
-                  //     context, '/detailDokumen'
-                  // );
-                  print(_get[index]);
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(builder: (context)=> DetailPage(dokumen : _get[index])),
-                  );
+                  Navigator.of(context).pushNamed('/detailDokumen', arguments: jsonEncode(filteredDokumens[index]));
                 },
                 child: new Card(
-                  // margin: EdgeInsets.symmetric(
-                  //   vertical: 20,
-                  //   horizontal: 12,
-                  // ),
-                  // child: new Text(
-                  //     'id Doc = ${_get[index]['id_dokumen']}'
-                  // ),
                   elevation: 12,
                   color: backgroundColor13,
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(12),
                   ),
-                  // child: Padding(
-                  //   padding: EdgeInsets.all(35.0),
-                  //
-                  // ),
-                  // child : SizedBox(
-                  //   width: 300,
-                  //   height: 80,
-                  // ),
                   child: Row(
                     children: [
+                      SizedBox(
+                        width: 15,
+                      ),
                       Container(
                         width: 40,
                         height: 80,
@@ -187,13 +274,13 @@ class _DokumenPageState extends State<DokumenPage>{
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Text(
-                              '${_get[index]['keterangan_belanja']}',
+                              '${filteredDokumens[index].keterangan_belanja}',
                               style: primaryTextStyle.copyWith(
                                 fontWeight: semiBold,
                               ),
                             ),
                             Text(
-                              '${_get[index]['instansi']['nama_instansi']}',
+                              '${filteredDokumens[index].instansi.nama_instansi}',
                               style: subtitleTextStyle.copyWith(
                                 fontWeight: light,
                               ),
@@ -201,28 +288,101 @@ class _DokumenPageState extends State<DokumenPage>{
                           ],
                         ),
                       ),
-                      Text(
-                        '3 Item',
-                        style: inputStyle.copyWith(
-                          fontSize: 12,
+                      Container (
+                        width: 23,
+                        height: 23,
+                        decoration: BoxDecoration(
+                          shape: BoxShape.circle,
+                          image: DecorationImage(image: AssetImage('assets/icon_information.png'),),
                         ),
+                      ),
+                      SizedBox(
+                        width: 15,
                       ),
                     ],
                   ),
                 ),
               );
             }
-        ),
+        )
+        // child: ListView.builder(
+        //     shrinkWrap: true,
+        //     itemCount: filteredDokumens.length,
+        //     itemBuilder: (BuildContext context, index){
+        //       return GestureDetector(
+        //         onTap: () {
+        //           Navigator.of(context).pushNamed('/detailDokumen', arguments: jsonEncode(filteredDokumens[index]));
+        //         },
+        //         child: new Card(
+        //           elevation: 12,
+        //           color: backgroundColor13,
+        //           shape: RoundedRectangleBorder(
+        //             borderRadius: BorderRadius.circular(12),
+        //           ),
+        //           child: Row(
+        //             children: [
+        //               SizedBox(
+        //                 width: 15,
+        //               ),
+        //               Container(
+        //                 width: 40,
+        //                 height: 80,
+        //                 decoration: BoxDecoration(
+        //                   borderRadius: BorderRadius.circular(5),
+        //                   image: DecorationImage(
+        //                     image: AssetImage(
+        //                       'assets/icon_goverment.png',
+        //                     ),
+        //                   ),
+        //                 ),
+        //               ),
+        //               SizedBox(
+        //                 width: 12,
+        //               ),
+        //               Expanded(
+        //                 child: Column(
+        //                   crossAxisAlignment: CrossAxisAlignment.start,
+        //                   children: [
+        //                     Text(
+        //                       '${filteredDokumens[index].keterangan_belanja}',
+        //                       style: primaryTextStyle.copyWith(
+        //                         fontWeight: semiBold,
+        //                       ),
+        //                     ),
+        //                     Text(
+        //                       '${filteredDokumens[index].instansi.nama_instansi}',
+        //                       style: subtitleTextStyle.copyWith(
+        //                         fontWeight: light,
+        //                       ),
+        //                     ),
+        //                   ],
+        //                 ),
+        //               ),
+        //               Container (
+        //                 width: 23,
+        //                 height: 23,
+        //                 decoration: BoxDecoration(
+        //                   shape: BoxShape.circle,
+        //                   image: DecorationImage(image: AssetImage('assets/icon_information.png'),),
+        //                 ),
+        //               ),
+        //               SizedBox(
+        //                 width: 15,
+        //               ),
+        //             ],
+        //           ),
+        //         ),
+        //       );
+        //     }
+        // ),
 
       );
     }
     return ListView(
       children: [
         header(),
-        // categories(),
-        // popularProductsTitle(),
-        // popularProducts(),
         titlePage(),
+        search(),
         item(),
       ],
     );

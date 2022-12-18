@@ -35,6 +35,11 @@ dependencies:
   smart_select: ^4.3.2
   select_form_field: ^2.2.0
   flutter_staggered_grid_view: ^0.6.1
+  image_picker: ^0.6.7+17
+  dropdown_search: ^3.0.1
+  pdf: ^3.8.3
+  flushbar: ^1.10.4
+  ext_storage: ^1.0.3
 
 dev_dependencies:
   flutter_test:

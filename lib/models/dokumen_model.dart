@@ -1,4 +1,4 @@
-import 'package:app_eblendrang/models/instansi_model.dart';
+// import 'package:app_eblendrang/models/instansi_model.dart';
 import 'dart:convert';
 
 // List<DokumenModel> modelDokumenFromJson (String str) =>
@@ -10,6 +10,7 @@ class DokumenModel{
   int id_dokumen;
   String keterangan_belanja;
   String no_spk;
+  DateTime tanggal_spk;
   String no_bast;
   String alamat;
   Instansi instansi;
@@ -20,6 +21,7 @@ class DokumenModel{
     this.id_dokumen,
     this.keterangan_belanja,
     this.no_spk,
+    this.tanggal_spk,
     this.no_bast,
     this.alamat,
     this.instansi,
@@ -27,26 +29,32 @@ class DokumenModel{
     // this.updateAt,
   });
 
-  DokumenModel.fromJson(Map<String, dynamic> json){
-    id_dokumen: json['id_dokumen'];
-    keterangan_belanja: json['keterangan_belanja'];
-    no_spk: json['no_spk'];
-    no_bast: json['no_bast'];
-    alamat: json['alamat'];
-    instansi: Instansi.fromJson(json['instansi']);
+  factory DokumenModel.fromJson(Map<String, dynamic> json){
+  return DokumenModel(
+    id_dokumen: json['id_dokumen'],
+    keterangan_belanja: json['keterangan_belanja'],
+    no_spk: json['no_spk'],
+    tanggal_spk: DateTime.parse(json['tgl_spk']),
+    no_bast: json['no_bast'],
+    alamat: json['alamat'],
+    instansi: Instansi.fromJson(json['instansi']),
     // createdAt: DateTime.parse(json["created_at"]),
     // updateAt: DateTime.parse(json["updated_at"]),
+    );
   }
 
-  Map<String, dynamic> toJson() => {
-    "id_dokumen": id_dokumen,
-    "keterangan_belanja": keterangan_belanja,
-    "no_spk" : no_spk,
-    "no_bast" : no_bast,
-    "alamat" : alamat,
-    "instansi": instansi.toJson(),
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data= new Map<String, dynamic>();
+    data['id_dokumen'] = this.id_dokumen;
+    data ['keterangan_belanja'] = this.keterangan_belanja;
+    data['no_spk'] = this.no_spk;
+    data['tgl_spk'] = this.tanggal_spk.toString();
+    data['no_bast'] = this.no_bast;
+    data['alamat'] = this.alamat;
+    data['instansi']= this.instansi.toJson();
     // "created_at": createdAt.toString(),
-  };
+    return data;
+  }
 }
 
 class Instansi{

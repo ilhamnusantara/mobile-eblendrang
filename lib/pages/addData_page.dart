@@ -1,8 +1,12 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:app_eblendrang/themes.dart';
 import 'package:flutter/services.dart';
 import 'package:intl/intl.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:select_form_field/select_form_field.dart';
+import 'package:dropdown_search/dropdown_search.dart';
 
 class AddData extends StatefulWidget{
   @override
@@ -23,6 +27,7 @@ class Company{
     ];
   }
 }
+
 
 class Rekanan{
   int id_rekanan;
@@ -82,6 +87,7 @@ class _AddData extends State<AddData>{
   onChangeDropdownItem(Company selectedCompany){
     setState(() {
       _selectedCompany = selectedCompany;
+      print(_selectedCompany.jenisBelanja);
     });
   }
 
@@ -95,6 +101,21 @@ class _AddData extends State<AddData>{
   TextEditingController dateInput2 = TextEditingController();
   TextEditingController dateInput3 = TextEditingController();
 
+  List<String> company =["Belanja Modal Almari", "Belanja Modal Pendingin", "Belanja Modal Komputer Personal"];
+
+  File _foto;
+  PickedFile _pickedFile;
+  final _picker = ImagePicker();
+  Future<void> _chooseImageFromCamera() async
+  {
+    _pickedFile = await _picker.getImage(source: ImageSource.camera);
+    if(_pickedFile != null)
+    {
+      setState(() {
+        _foto = File(_pickedFile.path);
+      });
+    }
+  }
   @override
   Widget build(BuildContext context) {
     Future<void> showSuccessDialog() async{
@@ -212,6 +233,18 @@ class _AddData extends State<AddData>{
     Widget masterData(){
       return Container(
         margin: EdgeInsets.only(top: 10),
+        // child: DropdownSearch<String>(
+        //   mode: Mode.MENU,
+        //   showSelectedItems: true,
+        //   items: ["Brazil", "Italia (Disabled)", "Tunisia", 'Canada', 'Canada', 'Canada', 'Canada', 'Canada', 'Canada', 'Canada'],
+        //   dropdownSearchDecoration: InputDecoration(
+        //     labelText: "Menu mode",
+        //     hintText: "country in menu mode",
+        //   ),
+        //   popupItemDisabled: (String s) => s.startsWith('I'),
+        //   onChanged: print,
+        //   selectedItem: "Brazil",
+        // ),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -238,10 +271,26 @@ class _AddData extends State<AddData>{
                       width: 16,
                     ),
                     DropdownButton(
+                      focusColor: Colors.white,
                       value: _selectedCompany,
+                      hint: Text("Pilih data master"),
                       items: _dropdownMenuItems,
                       onChanged: onChangeDropdownItem,
                     ),
+                    // Container(
+                    //   child : DropdownSearch<String>(
+                    //     mode: Mode.MENU,
+                    //     showSelectedItems: true,
+                    //     items: ["Brazil", "Italia (Disabled)", "Tunisia", 'Canada'],
+                    //     dropdownSearchDecoration: InputDecoration(
+                    //       labelText: "Menu mode",
+                    //       hintText: "country in menu mode",
+                    //     ),
+                    //     popupItemDisabled: (String s) => s.startsWith('I'),
+                    //     onChanged: print,
+                    //     selectedItem: "Brazil",
+                    //   ),
+                    // ),
                   ],
                 ),
               ),
@@ -820,7 +869,7 @@ class _AddData extends State<AddData>{
     }
     Widget dateppb(){
       return Container(
-        margin: EdgeInsets.only(top: 10, bottom: 20),
+        margin: EdgeInsets.only(top: 10,),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -879,6 +928,86 @@ class _AddData extends State<AddData>{
         ),
       );
     }
+    Widget button(){
+      return Container(
+        margin: EdgeInsets.only(
+          top: 10,
+          bottom: 30,
+        ),
+        child: Row(
+          children: [
+            Expanded(
+                child: TextButton(
+                  onPressed: () {
+                    Navigator.pushNamed(context, '/pdf');
+                  },
+                  child: Text(
+                    "File SPK",
+                    style: secondTextStyle.copyWith(
+                      fontSize: 16,
+                      fontWeight: medium,
+                    ),
+                  ),
+                  style: TextButton.styleFrom(
+                    backgroundColor: backgroundColor12,
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(12),
+                    ),
+                  ),
+                  // color: Colors.black,
+                  // textColor: Colors.white,
+                )
+            ),
+            SizedBox(
+              width: 8,
+            ),
+            Expanded(
+                child: TextButton(
+                  onPressed: _chooseImageFromCamera,
+                  child: Text(
+                    "Foto",
+                    style: secondTextStyle.copyWith(
+                      fontSize: 16,
+                      fontWeight: medium,
+                    ),
+                  ),
+                  style: TextButton.styleFrom(
+                    backgroundColor: backgroundColor12,
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(12),
+                    ),
+                  ),
+                  // color: Colors.black,
+                  // textColor: Colors.white,
+                )
+            ),
+            SizedBox(
+              width: 8,
+            ),
+            Expanded(
+                child: TextButton(
+                  onPressed: () {},
+                  child: Text(
+                    "File BAST",
+                    style: secondTextStyle.copyWith(
+                      fontSize: 16,
+                      fontWeight: medium,
+                    ),
+                  ),
+                  style: TextButton.styleFrom(
+                    backgroundColor: backgroundColor12,
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(12),
+                    ),
+                  ),
+                  // color: Colors.black,
+                  // textColor: Colors.white,
+                )
+            ),
+          ],
+        ),
+      );
+    }
     Widget content(){
       return SingleChildScrollView(
         child: Stack(
@@ -904,6 +1033,7 @@ class _AddData extends State<AddData>{
                   rekanan(),
                   noPpb(),
                   dateppb(),
+                  button(),
                 ],
               ),
             ),
