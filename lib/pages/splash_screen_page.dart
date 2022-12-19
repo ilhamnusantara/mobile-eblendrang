@@ -28,8 +28,8 @@ class _SpashScreenPageState extends State<SpashScreenPage> {
     return new SplashScreen(
       backgroundColor: backgroundColor15,
       seconds: 3,
-      // navigateAfterSeconds: SigninPage(),
-      navigateAfterSeconds: AddData(),
+      navigateAfterSeconds: SigninPage(),
+      // navigateAfterSeconds: AddData(),
       title: new Text(
         'E-Blendrang Kecamatan Taman',
         textScaleFactor: 1.8,
