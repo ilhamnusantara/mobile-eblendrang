@@ -8,19 +8,20 @@ import 'package:image_picker/image_picker.dart';
 import 'package:select_form_field/select_form_field.dart';
 import 'package:dropdown_search/dropdown_search.dart';
 
-class AddData extends StatefulWidget{
+class AddData extends StatefulWidget {
   @override
-  State<StatefulWidget> createState(){
+  State<StatefulWidget> createState() {
     return _AddData();
   }
 }
 
-class Company{
+class Company {
+  //next, create endpoints for list of belanja
   int id;
   String jenisBelanja;
   Company(this.id, this.jenisBelanja);
-  static List<Company> getCompanies(){
-    return<Company>[
+  static List<Company> getCompanies() {
+    return <Company>[
       Company(1, 'Belanja Modal Almari'),
       Company(2, 'Belanja Modal Pendingin'),
       Company(3, 'Belanja Modal Komputer Personal'),
@@ -28,13 +29,13 @@ class Company{
   }
 }
 
-
-class Rekanan{
+class Rekanan {
+  //next, create endpoints for list of company
   int id_rekanan;
   String nameRekanan;
   Rekanan(this.id_rekanan, this.nameRekanan);
-  static List<Rekanan> getRekanans(){
-    return<Rekanan>[
+  static List<Rekanan> getRekanans() {
+    return <Rekanan>[
       Rekanan(1, 'CV Jaya Abadi'),
       Rekanan(2, 'CV Elshaddai'),
       Rekanan(3, 'CV. Saripah'),
@@ -42,7 +43,7 @@ class Rekanan{
   }
 }
 
-class _AddData extends State<AddData>{
+class _AddData extends State<AddData> {
   List<Company> _companies = Company.getCompanies();
   List<DropdownMenuItem<Company>> _dropdownMenuItems;
   Company _selectedCompany;
@@ -53,7 +54,7 @@ class _AddData extends State<AddData>{
   void initState() {
     dateInput.text = "";
     dateInput2.text = "";
-    dateInput3.text = "";//set the Initial value of text field
+    dateInput3.text = ""; //set the Initial value of text field
     _dropdownMenuItems = buildDropdownMenuItems(_companies);
     _selectedCompany = _dropdownMenuItems[0].value;
     _dropdownMenuItems2 = buildDropdownMenuItems2(_rekanans);
@@ -61,37 +62,41 @@ class _AddData extends State<AddData>{
     super.initState();
     // super.initState();
   }
-  List<DropdownMenuItem<Company>> buildDropdownMenuItems(List companies){
+
+  List<DropdownMenuItem<Company>> buildDropdownMenuItems(List companies) {
     List<DropdownMenuItem<Company>> items = List();
-    for(Company company in companies){
-      items.add(DropdownMenuItem(
+    for (Company company in companies) {
+      items.add(
+        DropdownMenuItem(
           value: company,
           child: Text(company.jenisBelanja),
-      ),
+        ),
       );
     }
     return items;
   }
-  List<DropdownMenuItem<Rekanan>> buildDropdownMenuItems2(List rekanans){
+
+  List<DropdownMenuItem<Rekanan>> buildDropdownMenuItems2(List rekanans) {
     List<DropdownMenuItem<Rekanan>> items2 = List();
-    for(Rekanan rekanan in rekanans){
-      items2.add(DropdownMenuItem(
-        value: rekanan,
-        child: Text(rekanan.nameRekanan),
-      ),
+    for (Rekanan rekanan in rekanans) {
+      items2.add(
+        DropdownMenuItem(
+          value: rekanan,
+          child: Text(rekanan.nameRekanan),
+        ),
       );
     }
     return items2;
   }
 
-  onChangeDropdownItem(Company selectedCompany){
+  onChangeDropdownItem(Company selectedCompany) {
     setState(() {
       _selectedCompany = selectedCompany;
       print(_selectedCompany.jenisBelanja);
     });
   }
 
-  onChangeDropdownItem2(Rekanan selectedRekanan){
+  onChangeDropdownItem2(Rekanan selectedRekanan) {
     setState(() {
       _selectedRekanan = selectedRekanan;
     });
@@ -101,24 +106,27 @@ class _AddData extends State<AddData>{
   TextEditingController dateInput2 = TextEditingController();
   TextEditingController dateInput3 = TextEditingController();
 
-  List<String> company =["Belanja Modal Almari", "Belanja Modal Pendingin", "Belanja Modal Komputer Personal"];
+  List<String> company = [
+    "Belanja Modal Almari",
+    "Belanja Modal Pendingin",
+    "Belanja Modal Komputer Personal"
+  ];
 
   File _foto;
   PickedFile _pickedFile;
   final _picker = ImagePicker();
-  Future<void> _chooseImageFromCamera() async
-  {
+  Future<void> _chooseImageFromCamera() async {
     _pickedFile = await _picker.getImage(source: ImageSource.camera);
-    if(_pickedFile != null)
-    {
+    if (_pickedFile != null) {
       setState(() {
         _foto = File(_pickedFile.path);
       });
     }
   }
+
   @override
   Widget build(BuildContext context) {
-    Future<void> showSuccessDialog() async{
+    Future<void> showSuccessDialog() async {
       return showDialog(
         context: context,
         builder: (BuildContext contex) => Container(
@@ -134,7 +142,7 @@ class _AddData extends State<AddData>{
                   Align(
                     alignment: Alignment.centerLeft,
                     child: GestureDetector(
-                      onTap: (){
+                      onTap: () {
                         Navigator.pop(context);
                       },
                       child: Icon(
@@ -170,7 +178,8 @@ class _AddData extends State<AddData>{
                     width: 154,
                     height: 44,
                     child: TextButton(
-                      onPressed: (){
+                      onPressed: () {
+                        //post data into server..
                         Navigator.pushNamed(context, '/home');
                       },
                       style: TextButton.styleFrom(
@@ -196,7 +205,7 @@ class _AddData extends State<AddData>{
       );
     }
 
-    Widget header(){
+    Widget header() {
       return AppBar(
         title: Text(
           'Tambah Dokumen',
@@ -209,20 +218,19 @@ class _AddData extends State<AddData>{
         leading: IconButton(
           icon: Icon(Icons.close),
           color: Colors.white,
-          onPressed: (){
+          onPressed: () {
             Navigator.pop(context);
           },
         ),
         centerTitle: true,
         elevation: 0,
-
         actions: [
           IconButton(
             icon: Icon(
               Icons.check,
               color: primaryColor,
             ),
-            onPressed: (){
+            onPressed: () {
               showSuccessDialog();
             },
           ),
@@ -230,7 +238,8 @@ class _AddData extends State<AddData>{
         foregroundColor: blck,
       );
     }
-    Widget masterData(){
+
+    Widget masterData() {
       return Container(
         margin: EdgeInsets.only(top: 10),
         // child: DropdownSearch<String>(
@@ -256,7 +265,7 @@ class _AddData extends State<AddData>{
               ),
             ),
             SizedBox(
-              height:12,
+              height: 12,
             ),
             Container(
               height: 40,
@@ -271,7 +280,9 @@ class _AddData extends State<AddData>{
                       width: 16,
                     ),
                     DropdownButton(
-                      focusColor: Colors.white,
+                      focusColor: Colors.blueGrey,
+                      borderRadius: BorderRadius.circular(20),
+                      dropdownColor: Colors.blue,
                       value: _selectedCompany,
                       hint: Text("Pilih data master"),
                       items: _dropdownMenuItems,
@@ -299,7 +310,8 @@ class _AddData extends State<AddData>{
         ),
       );
     }
-    Widget nameInstansi(){
+
+    Widget nameInstansi() {
       return Container(
         margin: EdgeInsets.only(top: 10),
         child: Column(
@@ -313,7 +325,7 @@ class _AddData extends State<AddData>{
               ),
             ),
             SizedBox(
-              height:12,
+              height: 12,
             ),
             Container(
               height: 40,
@@ -329,19 +341,18 @@ class _AddData extends State<AddData>{
                     ),
                     Expanded(
                         child: TextFormField(
-                          readOnly: true,
-                          style: primaryTextStyle,
-                          decoration: InputDecoration(
-                            hintText: 'Kelurahan Kalijaten',
-                            hintStyle: inputStyle,
-                            enabledBorder: UnderlineInputBorder(
-                              borderSide: BorderSide(
-                                color: grayChoose,
-                              ),
-                            ),
+                      readOnly: true,
+                      style: primaryTextStyle,
+                      decoration: InputDecoration(
+                        hintText: 'Kelurahan Kalijaten',
+                        hintStyle: inputStyle,
+                        enabledBorder: UnderlineInputBorder(
+                          borderSide: BorderSide(
+                            color: grayChoose,
                           ),
-                        )
-                    ),
+                        ),
+                      ),
+                    )),
                   ],
                 ),
               ),
@@ -350,7 +361,8 @@ class _AddData extends State<AddData>{
         ),
       );
     }
-    Widget keterangan(){
+
+    Widget keterangan() {
       return Container(
         margin: EdgeInsets.only(top: 10),
         child: Column(
@@ -364,7 +376,7 @@ class _AddData extends State<AddData>{
               ),
             ),
             SizedBox(
-              height:12,
+              height: 12,
             ),
             Container(
               height: 40,
@@ -380,18 +392,17 @@ class _AddData extends State<AddData>{
                     ),
                     Expanded(
                         child: TextFormField(
-                          style: primaryTextStyle,
-                          decoration: InputDecoration(
-                            hintText: 'Belanja Modal Vacum Cleaner',
-                            hintStyle: inputStyle,
-                            enabledBorder: UnderlineInputBorder(
-                              borderSide: BorderSide(
-                                color: grayChoose,
-                              ),
-                            ),
+                      style: primaryTextStyle,
+                      decoration: InputDecoration(
+                        hintText: 'Belanja Modal Vacum Cleaner',
+                        hintStyle: inputStyle,
+                        enabledBorder: UnderlineInputBorder(
+                          borderSide: BorderSide(
+                            color: grayChoose,
                           ),
-                        )
-                    ),
+                        ),
+                      ),
+                    )),
                   ],
                 ),
               ),
@@ -400,7 +411,8 @@ class _AddData extends State<AddData>{
         ),
       );
     }
-    Widget noSPK(){
+
+    Widget noSPK() {
       return Container(
         margin: EdgeInsets.only(top: 10),
         child: Column(
@@ -414,7 +426,7 @@ class _AddData extends State<AddData>{
               ),
             ),
             SizedBox(
-              height:12,
+              height: 12,
             ),
             Container(
               height: 40,
@@ -430,18 +442,17 @@ class _AddData extends State<AddData>{
                     ),
                     Expanded(
                         child: TextFormField(
-                          style: primaryTextStyle,
-                          decoration: InputDecoration(
-                            hintText: '027/4.3.2.1/PPKom.438.7.7.7/2022',
-                            hintStyle: inputStyle,
-                            enabledBorder: UnderlineInputBorder(
-                              borderSide: BorderSide(
-                                color: grayChoose,
-                              ),
-                            ),
+                      style: primaryTextStyle,
+                      decoration: InputDecoration(
+                        hintText: '027/4.3.2.1/PPKom.438.7.7.7/2022',
+                        hintStyle: inputStyle,
+                        enabledBorder: UnderlineInputBorder(
+                          borderSide: BorderSide(
+                            color: grayChoose,
                           ),
-                        )
-                    ),
+                        ),
+                      ),
+                    )),
                   ],
                 ),
               ),
@@ -450,7 +461,8 @@ class _AddData extends State<AddData>{
         ),
       );
     }
-    Widget dateSPK(){
+
+    Widget dateSPK() {
       return Container(
         margin: EdgeInsets.only(top: 10),
         child: Column(
@@ -464,7 +476,7 @@ class _AddData extends State<AddData>{
               ),
             ),
             SizedBox(
-              height:12,
+              height: 12,
             ),
             Container(
               height: 40,
@@ -480,29 +492,29 @@ class _AddData extends State<AddData>{
                     ),
                     Expanded(
                         child: TextFormField(
-                          controller: dateInput,
-                          style: primaryTextStyle,
-                          readOnly: true,
-                          onTap: () async{
-                            DateTime dateSPK = await showDatePicker(
-                              context: context,
-                              initialDate: DateTime.now(),
-                              firstDate: DateTime(2000),
-                              lastDate: DateTime(2101),
-                            );
-                            if(dateSPK != null){
-                              print(dateSPK);
-                              String formattedDate = DateFormat('dd-MM-yyyy').format(dateSPK);
-                              print(formattedDate);
-                              setState((){
-                                dateInput.text = formattedDate;
-                              });
-                            }else{
-                              print("Tanggal Kosong");
-                            }
-                          },
-                        )
-                    ),
+                      controller: dateInput,
+                      style: primaryTextStyle,
+                      readOnly: true,
+                      onTap: () async {
+                        DateTime dateSPK = await showDatePicker(
+                          context: context,
+                          initialDate: DateTime.now(),
+                          firstDate: DateTime(2000),
+                          lastDate: DateTime(2101),
+                        );
+                        if (dateSPK != null) {
+                          print(dateSPK);
+                          String formattedDate =
+                              DateFormat('dd-MM-yyyy').format(dateSPK);
+                          print(formattedDate);
+                          setState(() {
+                            dateInput.text = formattedDate;
+                          });
+                        } else {
+                          print("Tanggal Kosong");
+                        }
+                      },
+                    )),
                   ],
                 ),
               ),
@@ -511,7 +523,8 @@ class _AddData extends State<AddData>{
         ),
       );
     }
-    Widget noBAST(){
+
+    Widget noBAST() {
       return Container(
         margin: EdgeInsets.only(top: 10),
         child: Column(
@@ -525,7 +538,7 @@ class _AddData extends State<AddData>{
               ),
             ),
             SizedBox(
-              height:12,
+              height: 12,
             ),
             Container(
               height: 40,
@@ -541,18 +554,17 @@ class _AddData extends State<AddData>{
                     ),
                     Expanded(
                         child: TextFormField(
-                          style: primaryTextStyle,
-                          decoration: InputDecoration(
-                            hintText: '027/4.3.2.4/PPKom.438.7.7.7/2022',
-                            hintStyle: inputStyle,
-                            enabledBorder: UnderlineInputBorder(
-                              borderSide: BorderSide(
-                                color: grayChoose,
-                              ),
-                            ),
+                      style: primaryTextStyle,
+                      decoration: InputDecoration(
+                        hintText: '027/4.3.2.4/PPKom.438.7.7.7/2022',
+                        hintStyle: inputStyle,
+                        enabledBorder: UnderlineInputBorder(
+                          borderSide: BorderSide(
+                            color: grayChoose,
                           ),
-                        )
-                    ),
+                        ),
+                      ),
+                    )),
                   ],
                 ),
               ),
@@ -561,7 +573,8 @@ class _AddData extends State<AddData>{
         ),
       );
     }
-    Widget dateBAST(){
+
+    Widget dateBAST() {
       return Container(
         margin: EdgeInsets.only(top: 10),
         child: Column(
@@ -575,7 +588,7 @@ class _AddData extends State<AddData>{
               ),
             ),
             SizedBox(
-              height:12,
+              height: 12,
             ),
             Container(
               height: 40,
@@ -591,29 +604,29 @@ class _AddData extends State<AddData>{
                     ),
                     Expanded(
                         child: TextFormField(
-                          controller: dateInput2,
-                          style: primaryTextStyle,
-                          readOnly: true,
-                          onTap: () async{
-                            DateTime dateBAST = await showDatePicker(
-                              context: context,
-                              initialDate: DateTime.now(),
-                              firstDate: DateTime(2000),
-                              lastDate: DateTime(2101),
-                            );
-                            if(dateBAST != null){
-                              print(dateBAST);
-                              String formattedDate = DateFormat('dd-MM-yyyy').format(dateBAST);
-                              print(formattedDate);
-                              setState((){
-                                dateInput2.text = formattedDate;
-                              });
-                            }else{
-                              print("Tanggal Kosong");
-                            }
-                          },
-                        )
-                    ),
+                      controller: dateInput2,
+                      style: primaryTextStyle,
+                      readOnly: true,
+                      onTap: () async {
+                        DateTime dateBAST = await showDatePicker(
+                          context: context,
+                          initialDate: DateTime.now(),
+                          firstDate: DateTime(2000),
+                          lastDate: DateTime(2101),
+                        );
+                        if (dateBAST != null) {
+                          print(dateBAST);
+                          String formattedDate =
+                              DateFormat('dd-MM-yyyy').format(dateBAST);
+                          print(formattedDate);
+                          setState(() {
+                            dateInput2.text = formattedDate;
+                          });
+                        } else {
+                          print("Tanggal Kosong");
+                        }
+                      },
+                    )),
                   ],
                 ),
               ),
@@ -622,7 +635,8 @@ class _AddData extends State<AddData>{
         ),
       );
     }
-    Widget satuan(){
+
+    Widget satuan() {
       return Container(
         margin: EdgeInsets.only(top: 10),
         child: Column(
@@ -636,7 +650,7 @@ class _AddData extends State<AddData>{
               ),
             ),
             SizedBox(
-              height:12,
+              height: 12,
             ),
             Container(
               height: 40,
@@ -652,18 +666,17 @@ class _AddData extends State<AddData>{
                     ),
                     Expanded(
                         child: TextFormField(
-                          style: primaryTextStyle,
-                          decoration: InputDecoration(
-                            hintText: 'Paket/Unit/Buah/Tahun',
-                            hintStyle: inputStyle,
-                            enabledBorder: UnderlineInputBorder(
-                              borderSide: BorderSide(
-                                color: grayChoose,
-                              ),
-                            ),
+                      style: primaryTextStyle,
+                      decoration: InputDecoration(
+                        hintText: 'Paket/Unit/Buah/Tahun',
+                        hintStyle: inputStyle,
+                        enabledBorder: UnderlineInputBorder(
+                          borderSide: BorderSide(
+                            color: grayChoose,
                           ),
-                        )
-                    ),
+                        ),
+                      ),
+                    )),
                   ],
                 ),
               ),
@@ -672,7 +685,8 @@ class _AddData extends State<AddData>{
         ),
       );
     }
-    Widget volume(){
+
+    Widget volume() {
       return Container(
         margin: EdgeInsets.only(top: 10),
         child: Column(
@@ -686,7 +700,7 @@ class _AddData extends State<AddData>{
               ),
             ),
             SizedBox(
-              height:12,
+              height: 12,
             ),
             Container(
               height: 40,
@@ -702,22 +716,21 @@ class _AddData extends State<AddData>{
                     ),
                     Expanded(
                         child: TextField(
-                          style: primaryTextStyle,
-                          decoration: InputDecoration(
-                            hintText: '1 - 100',
-                            hintStyle: inputStyle,
-                            enabledBorder: UnderlineInputBorder(
-                              borderSide: BorderSide(
-                                color: grayChoose,
-                              ),
-                            ),
+                      style: primaryTextStyle,
+                      decoration: InputDecoration(
+                        hintText: '1 - 100',
+                        hintStyle: inputStyle,
+                        enabledBorder: UnderlineInputBorder(
+                          borderSide: BorderSide(
+                            color: grayChoose,
                           ),
-                          keyboardType: TextInputType.number,
-                          inputFormatters: <TextInputFormatter>[
-                            FilteringTextInputFormatter.digitsOnly
-                          ],
-                        )
-                    ),
+                        ),
+                      ),
+                      keyboardType: TextInputType.number,
+                      inputFormatters: <TextInputFormatter>[
+                        FilteringTextInputFormatter.digitsOnly
+                      ],
+                    )),
                   ],
                 ),
               ),
@@ -726,7 +739,8 @@ class _AddData extends State<AddData>{
         ),
       );
     }
-    Widget nomPerUnit(){
+
+    Widget nomPerUnit() {
       return Container(
         margin: EdgeInsets.only(top: 10),
         child: Column(
@@ -740,7 +754,7 @@ class _AddData extends State<AddData>{
               ),
             ),
             SizedBox(
-              height:12,
+              height: 12,
             ),
             Container(
               height: 40,
@@ -756,18 +770,17 @@ class _AddData extends State<AddData>{
                     ),
                     Expanded(
                         child: TextFormField(
-                          style: primaryTextStyle,
-                          decoration: InputDecoration(
-                            hintText: 'Rp.1.000.000,-',
-                            hintStyle: inputStyle,
-                            enabledBorder: UnderlineInputBorder(
-                              borderSide: BorderSide(
-                                color: grayChoose,
-                              ),
-                            ),
+                      style: primaryTextStyle,
+                      decoration: InputDecoration(
+                        hintText: 'Rp.1.000.000,-',
+                        hintStyle: inputStyle,
+                        enabledBorder: UnderlineInputBorder(
+                          borderSide: BorderSide(
+                            color: grayChoose,
                           ),
-                        )
-                    ),
+                        ),
+                      ),
+                    )),
                   ],
                 ),
               ),
@@ -776,7 +789,8 @@ class _AddData extends State<AddData>{
         ),
       );
     }
-    Widget rekanan(){
+
+    Widget rekanan() {
       return Container(
         margin: EdgeInsets.only(top: 10),
         child: Column(
@@ -790,7 +804,7 @@ class _AddData extends State<AddData>{
               ),
             ),
             SizedBox(
-              height:12,
+              height: 12,
             ),
             Container(
               height: 40,
@@ -805,6 +819,9 @@ class _AddData extends State<AddData>{
                       width: 16,
                     ),
                     DropdownButton(
+                      focusColor: Colors.blueGrey,
+                      borderRadius: BorderRadius.circular(20),
+                      dropdownColor: Colors.blue,
                       value: _selectedRekanan,
                       items: _dropdownMenuItems2,
                       onChanged: onChangeDropdownItem2,
@@ -817,7 +834,8 @@ class _AddData extends State<AddData>{
         ),
       );
     }
-    Widget noPpb(){
+
+    Widget noPpb() {
       return Container(
         margin: EdgeInsets.only(top: 10),
         child: Column(
@@ -831,7 +849,7 @@ class _AddData extends State<AddData>{
               ),
             ),
             SizedBox(
-              height:12,
+              height: 12,
             ),
             Container(
               height: 40,
@@ -847,18 +865,17 @@ class _AddData extends State<AddData>{
                     ),
                     Expanded(
                         child: TextFormField(
-                          style: primaryTextStyle,
-                          decoration: InputDecoration(
-                            hintText: '601011107-PPB',
-                            hintStyle: inputStyle,
-                            enabledBorder: UnderlineInputBorder(
-                              borderSide: BorderSide(
-                                color: grayChoose,
-                              ),
-                            ),
+                      style: primaryTextStyle,
+                      decoration: InputDecoration(
+                        hintText: '601011107-PPB',
+                        hintStyle: inputStyle,
+                        enabledBorder: UnderlineInputBorder(
+                          borderSide: BorderSide(
+                            color: grayChoose,
                           ),
-                        )
-                    ),
+                        ),
+                      ),
+                    )),
                   ],
                 ),
               ),
@@ -867,9 +884,12 @@ class _AddData extends State<AddData>{
         ),
       );
     }
-    Widget dateppb(){
+
+    Widget dateppb() {
       return Container(
-        margin: EdgeInsets.only(top: 10,),
+        margin: EdgeInsets.only(
+          top: 10,
+        ),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -881,7 +901,7 @@ class _AddData extends State<AddData>{
               ),
             ),
             SizedBox(
-              height:12,
+              height: 12,
             ),
             Container(
               height: 40,
@@ -897,29 +917,29 @@ class _AddData extends State<AddData>{
                     ),
                     Expanded(
                         child: TextFormField(
-                          controller: dateInput3,
-                          style: primaryTextStyle,
-                          readOnly: true,
-                          onTap: () async{
-                            DateTime dateBAST = await showDatePicker(
-                              context: context,
-                              initialDate: DateTime.now(),
-                              firstDate: DateTime(2000),
-                              lastDate: DateTime(2101),
-                            );
-                            if(dateBAST != null){
-                              print(dateBAST);
-                              String formattedDate = DateFormat('dd-MM-yyyy').format(dateBAST);
-                              print(formattedDate);
-                              setState((){
-                                dateInput3.text = formattedDate;
-                              });
-                            }else{
-                              print("Tanggal Kosong");
-                            }
-                          },
-                        )
-                    ),
+                      controller: dateInput3,
+                      style: primaryTextStyle,
+                      readOnly: true,
+                      onTap: () async {
+                        DateTime dateBAST = await showDatePicker(
+                          context: context,
+                          initialDate: DateTime.now(),
+                          firstDate: DateTime(2000),
+                          lastDate: DateTime(2101),
+                        );
+                        if (dateBAST != null) {
+                          print(dateBAST);
+                          String formattedDate =
+                              DateFormat('dd-MM-yyyy').format(dateBAST);
+                          print(formattedDate);
+                          setState(() {
+                            dateInput3.text = formattedDate;
+                          });
+                        } else {
+                          print("Tanggal Kosong");
+                        }
+                      },
+                    )),
                   ],
                 ),
               ),
@@ -928,7 +948,8 @@ class _AddData extends State<AddData>{
         ),
       );
     }
-    Widget button(){
+
+    Widget button() {
       return Container(
         margin: EdgeInsets.only(
           top: 10,
@@ -938,77 +959,75 @@ class _AddData extends State<AddData>{
           children: [
             Expanded(
                 child: TextButton(
-                  onPressed: () {
-                    Navigator.pushNamed(context, '/pdf');
-                  },
-                  child: Text(
-                    "File SPK",
-                    style: secondTextStyle.copyWith(
-                      fontSize: 16,
-                      fontWeight: medium,
-                    ),
-                  ),
-                  style: TextButton.styleFrom(
-                    backgroundColor: backgroundColor12,
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(12),
-                    ),
-                  ),
-                  // color: Colors.black,
-                  // textColor: Colors.white,
-                )
-            ),
+              onPressed: () {
+                Navigator.pushNamed(context, '/pdf');
+              },
+              child: Text(
+                "File SPK",
+                style: secondTextStyle.copyWith(
+                  fontSize: 16,
+                  fontWeight: medium,
+                ),
+              ),
+              style: TextButton.styleFrom(
+                backgroundColor: backgroundColor12,
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(12),
+                ),
+              ),
+              // color: Colors.black,
+              // textColor: Colors.white,
+            )),
             SizedBox(
               width: 8,
             ),
             Expanded(
                 child: TextButton(
-                  onPressed: _chooseImageFromCamera,
-                  child: Text(
-                    "Foto",
-                    style: secondTextStyle.copyWith(
-                      fontSize: 16,
-                      fontWeight: medium,
-                    ),
-                  ),
-                  style: TextButton.styleFrom(
-                    backgroundColor: backgroundColor12,
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(12),
-                    ),
-                  ),
-                  // color: Colors.black,
-                  // textColor: Colors.white,
-                )
-            ),
+              onPressed: _chooseImageFromCamera,
+              child: Text(
+                "Foto",
+                style: secondTextStyle.copyWith(
+                  fontSize: 16,
+                  fontWeight: medium,
+                ),
+              ),
+              style: TextButton.styleFrom(
+                backgroundColor: backgroundColor12,
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(12),
+                ),
+              ),
+              // color: Colors.black,
+              // textColor: Colors.white,
+            )),
             SizedBox(
               width: 8,
             ),
             Expanded(
                 child: TextButton(
-                  onPressed: () {},
-                  child: Text(
-                    "File BAST",
-                    style: secondTextStyle.copyWith(
-                      fontSize: 16,
-                      fontWeight: medium,
-                    ),
-                  ),
-                  style: TextButton.styleFrom(
-                    backgroundColor: backgroundColor12,
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(12),
-                    ),
-                  ),
-                  // color: Colors.black,
-                  // textColor: Colors.white,
-                )
-            ),
+              onPressed: () {},
+              child: Text(
+                "File BAST",
+                style: secondTextStyle.copyWith(
+                  fontSize: 16,
+                  fontWeight: medium,
+                ),
+              ),
+              style: TextButton.styleFrom(
+                backgroundColor: backgroundColor12,
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(12),
+                ),
+              ),
+              // color: Colors.black,
+              // textColor: Colors.white,
+            )),
           ],
         ),
       );
     }
-    Widget content(){
+
+    Widget content() {
       return SingleChildScrollView(
         child: Stack(
           children: <Widget>[
@@ -1041,20 +1060,21 @@ class _AddData extends State<AddData>{
         ),
       );
     }
+
     return Scaffold(
       backgroundColor: backgroundColor15,
       appBar: header(),
       body: content(),
     );
     DropdownMenuItem<String> buildMenuItem(String item) => DropdownMenuItem(
-      value: item,
-      child: Text(
-        item,
-        style: primaryTextStyle.copyWith(
-          fontSize: 16,
-          fontWeight: medium,
-        ),
-      ),
-    );
+          value: item,
+          child: Text(
+            item,
+            style: primaryTextStyle.copyWith(
+              fontSize: 16,
+              fontWeight: medium,
+            ),
+          ),
+        );
   }
 }

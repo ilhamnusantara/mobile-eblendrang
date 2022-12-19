@@ -22,23 +22,25 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MultiProvider(
       providers: [
-        ChangeNotifierProvider(create: (context) => AuthProvider(),
+        ChangeNotifierProvider(
+          create: (context) => AuthProvider(),
         ),
         ChangeNotifierProvider(
-            create: (context) => DokumenProvider(),
+          create: (context) => DokumenProvider(),
         ),
       ],
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
+        initialRoute: '/home',
         routes: {
           '/': (context) => SpashScreenPage(),
           // '/': (context) => SplashScreen(),
           '/sign-in': (context) => SigninPage(),
           '/home': (context) => MainPage(),
-          '/detailDokumen' : (context) => DetailPage(),
-          '/edit-profile' : (context) => EditProfilePage(),
-          '/addAll' : (context) => AddData(),
-          '/pdf' : (context) => Pdf(),
+          '/detailDokumen': (context) => DetailPage(),
+          '/edit-profile': (context) => EditProfilePage(),
+          '/addAll': (context) => AddData(),
+          '/pdf': (context) => Pdf(),
           // '/coba' : (context) => coba(),
         },
       ),

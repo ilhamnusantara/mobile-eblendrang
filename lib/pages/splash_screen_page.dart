@@ -13,12 +13,12 @@ class SpashScreenPage extends StatefulWidget {
 
 class _SpashScreenPageState extends State<SpashScreenPage> {
   @override
-  void initState(){
+  void initState() {
     getInit();
     super.initState();
   }
 
-  getInit() async{
+  getInit() async {
     await Provider.of<DokumenProvider>(context, listen: false).getDokumens();
     // Navigator.pushNamed(context, '/sign-in');
   }
@@ -30,14 +30,16 @@ class _SpashScreenPageState extends State<SpashScreenPage> {
       seconds: 3,
       // navigateAfterSeconds: SigninPage(),
       navigateAfterSeconds: AddData(),
-      title: new Text('E-Blendrang Kecamatan Taman',
+      title: new Text(
+        'E-Blendrang Kecamatan Taman',
         textScaleFactor: 1.8,
         style: TextStyle(
           color: blck,
         ),
       ),
 
-      loadingText: Text('Orang sabar disayang Tuhan',
+      loadingText: Text(
+        'Orang sabar disayang Tuhan',
         style: TextStyle(
           color: blck,
         ),

@@ -9,7 +9,7 @@ import 'package:flutter/rendering.dart';
 import 'package:provider/provider.dart';
 import 'package:http/http.dart' as http;
 
-class HomePage extends StatefulWidget{
+class HomePage extends StatefulWidget {
   HomePage({Key key}) : super(key: key);
   @override
   State<HomePage> createState() => _HomePageState();
@@ -17,18 +17,18 @@ class HomePage extends StatefulWidget{
 
 class _HomePageState extends State<HomePage> {
   @override
-  void initState(){
+  void initState() {
     super.initState();
     _getInstansi();
   }
+
   List<InstansiModel> allinstansis = [];
 
   Future<void> _getInstansi() async {
-    try{
-      final response = await http.get(Uri.parse(
-          "http://e-blendrang.id/api/dokumenValue"
-      ));
-      if (response.statusCode == 200){
+    try {
+      final response =
+          await http.get(Uri.parse("http://e-blendrang.id/api/dokumenValue"));
+      if (response.statusCode == 200) {
         final data = jsonDecode(response.body)['data'] as List<dynamic>;
         setState(() {
           allinstansis = [];
@@ -38,7 +38,7 @@ class _HomePageState extends State<HomePage> {
           print(data);
         });
       }
-    } catch (e){
+    } catch (e) {
       print(e);
     }
   }
@@ -48,7 +48,7 @@ class _HomePageState extends State<HomePage> {
     AuthProvider authProvider = Provider.of<AuthProvider>(context);
     UserModel user = authProvider.user;
 
-    Widget header(){
+    Widget header() {
       return Container(
         margin: EdgeInsets.only(
           top: 30,
@@ -78,18 +78,20 @@ class _HomePageState extends State<HomePage> {
               ),
             ),
             GestureDetector(
-              onTap: (){
+              onTap: () {
                 Navigator.pushNamed(
                   context,
                   '/edit-profile',
                 );
               },
-              child: Container (
+              child: Container(
                 width: 54,
                 height: 54,
                 decoration: BoxDecoration(
                   shape: BoxShape.circle,
-                  image: DecorationImage(image: AssetImage('assets/icon_email.png'),),
+                  image: DecorationImage(
+                    image: AssetImage('assets/icon_email.png'),
+                  ),
                 ),
               ),
             ),
@@ -98,9 +100,9 @@ class _HomePageState extends State<HomePage> {
       );
     }
 
-    Widget titlePage(){
+    Widget titlePage() {
       return Container(
-        margin : EdgeInsets.only(
+        margin: EdgeInsets.only(
           top: 50,
           left: marginLogin,
           right: marginLogin,
@@ -116,81 +118,82 @@ class _HomePageState extends State<HomePage> {
       );
     }
 
-    Widget item(){
+    Widget item() {
       return Container(
         margin: EdgeInsets.only(
-          top : 8,
+          top: 8,
           left: marginLogin,
           right: marginLogin,
         ),
         child: ListView.builder(
-            shrinkWrap: true,
-            itemCount: allinstansis.length,
-            padding: new EdgeInsets.only(
-              top: 10,
-            ),
-            itemBuilder: (BuildContext context, index){
-              return GestureDetector(
-                onTap: () {
-                  Navigator.of(context).pushNamed('/detailDokumen', arguments: jsonEncode(allinstansis[index]));
-                },
-                child: new Card(
-                  elevation: 12,
-                  color: backgroundColor13,
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(12),
-                  ),
-                  child: Row(
-                    children: [
-                      SizedBox(
-                        width: 15,
-                      ),
-                      Container(
-                        width: 40,
-                        height: 80,
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(5),
-                          image: DecorationImage(
-                            image: AssetImage(
-                              'assets/icon_goverment.png',
-                            ),
+          shrinkWrap: true,
+          itemCount: allinstansis.length,
+          padding: new EdgeInsets.only(
+            top: 10,
+          ),
+          itemBuilder: (BuildContext context, index) {
+            return GestureDetector(
+              onTap: () {
+                Navigator.of(context).pushNamed('/detailDokumen',
+                    arguments: jsonEncode(allinstansis[index]));
+              },
+              child: new Card(
+                elevation: 12,
+                color: backgroundColor13,
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(12),
+                ),
+                child: Row(
+                  children: [
+                    SizedBox(
+                      width: 15,
+                    ),
+                    Container(
+                      width: 40,
+                      height: 80,
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(5),
+                        image: DecorationImage(
+                          image: AssetImage(
+                            'assets/icon_goverment.png',
                           ),
                         ),
                       ),
-                      SizedBox(
-                        width: 15,
-                      ),
-                      Expanded(
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(
-                              '${allinstansis[index].nama_instansi}',
-                              style: primaryTextStyle.copyWith(
-                                fontWeight: semiBold,
-                              ),
+                    ),
+                    SizedBox(
+                      width: 15,
+                    ),
+                    Expanded(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            '${allinstansis[index].nama_instansi}',
+                            style: primaryTextStyle.copyWith(
+                              fontWeight: semiBold,
                             ),
-                          ],
-                        ),
+                          ),
+                        ],
                       ),
-                      Text(
-                        '${allinstansis[index].data_null} Item',
-                        style: inputStyle.copyWith(
-                          fontSize: 12,
-                        ),
+                    ),
+                    Text(
+                      '${allinstansis[index].data_null} Item',
+                      style: inputStyle.copyWith(
+                        fontSize: 12,
                       ),
-                      SizedBox(
-                        width: 15,
-                      )
-                    ],
-                  ),
+                    ),
+                    SizedBox(
+                      width: 15,
+                    )
+                  ],
                 ),
-              );
-            },
+              ),
+            );
+          },
         ),
-
       );
     }
+
     return ListView(
       children: [
         header(),

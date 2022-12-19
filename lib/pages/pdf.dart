@@ -1,23 +1,22 @@
 import 'dart:io';
 
-import 'package:flushbar/flushbar.dart';
+import 'package:another_flushbar/flushbar.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:path_provider/path_provider.dart';
 import 'package:pdf/pdf.dart';
 import 'package:pdf/widgets.dart' as pw;
-import 'package:ext_storage/ext_storage.dart';
+// import 'package:ext_storage/ext_storage.dart';
+import 'package:path_provider/path_provider.dart';
 
-class Pdf extends StatefulWidget{
-  Pdf({Key key}) : super(key: key) {
-  }
+class Pdf extends StatefulWidget {
+  Pdf({Key key}) : super(key: key) {}
   @override
-  State<StatefulWidget> createState(){
+  State<StatefulWidget> createState() {
     return _Pdf();
   }
 }
 
-class _Pdf extends State<Pdf>{
+class _Pdf extends State<Pdf> {
   final picker = ImagePicker();
   final pdf = pw.Document();
   List<File> _image = [];
@@ -41,16 +40,16 @@ class _Pdf extends State<Pdf>{
       ),
       body: _image != null
           ? ListView.builder(
-        itemCount: _image.length,
-        itemBuilder: (context, index) => Container(
-            height: 400,
-            width: double.infinity,
-            margin: EdgeInsets.all(8),
-            child: Image.file(
-              _image[index],
-              fit: BoxFit.cover,
-            )),
-      )
+              itemCount: _image.length,
+              itemBuilder: (context, index) => Container(
+                  height: 400,
+                  width: double.infinity,
+                  margin: EdgeInsets.all(8),
+                  child: Image.file(
+                    _image[index],
+                    fit: BoxFit.cover,
+                  )),
+            )
           : Container(),
     );
   }
@@ -78,12 +77,19 @@ class _Pdf extends State<Pdf>{
     }
   }
 
+  Future<String> filePath() async {
+    Directory docsDir = await getExternalStorageDirectory();
+    String docsPath = docsDir.path;
+    return docsPath;
+  }
+
   savePDF() async {
     try {
-      final dir = await ExtStorage.getExternalStoragePublicDirectory(
-          ExtStorage.DIRECTORY_DOWNLOADS);
+      // final dir = await ExtStorage.getExternalStoragePublicDirectory(
+      //     ExtStorage.DIRECTORY_DOWNLOADS);
       // final String dir = (await getApplicationDocumentsDirectory()).path;
-      print(dir);
+      var dir = await filePath();
+      print("Direktori => ${dir}");
       // final file = File('${dir}/filename${DateTime.now()}.pdf');
       // final file = File('${dir.path}/filename${DateTime.now()}.pdf');
       final file = File('${dir}/filename${DateTime.now()}.pdf');
