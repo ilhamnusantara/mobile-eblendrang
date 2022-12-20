@@ -45,26 +45,26 @@ class Rekanan {
 
 class _AddData extends State<AddData> {
   List<Company> _companies = Company.getCompanies();
-  List<DropdownMenuItem<Company>> _dropdownMenuItems;
-  Company _selectedCompany;
+  late List<DropdownMenuItem<Company>> _dropdownMenuItems;
+  late Company _selectedCompany;
   List<Rekanan> _rekanans = Rekanan.getRekanans();
-  List<DropdownMenuItem<Rekanan>> _dropdownMenuItems2;
-  Rekanan _selectedRekanan;
+  late List<DropdownMenuItem<Rekanan>> _dropdownMenuItems2;
+  late Rekanan _selectedRekanan;
   @override
   void initState() {
     dateInput.text = "";
     dateInput2.text = "";
     dateInput3.text = ""; //set the Initial value of text field
     _dropdownMenuItems = buildDropdownMenuItems(_companies);
-    _selectedCompany = _dropdownMenuItems[0].value;
+    _selectedCompany = _dropdownMenuItems[0].value!;
     _dropdownMenuItems2 = buildDropdownMenuItems2(_rekanans);
-    _selectedRekanan = _dropdownMenuItems2[0].value;
+    _selectedRekanan = _dropdownMenuItems2[0].value!;
     super.initState();
     // super.initState();
   }
 
   List<DropdownMenuItem<Company>> buildDropdownMenuItems(List companies) {
-    List<DropdownMenuItem<Company>> items = List();
+    List<DropdownMenuItem<Company>> items = [];
     for (Company company in companies) {
       items.add(
         DropdownMenuItem(
@@ -77,7 +77,7 @@ class _AddData extends State<AddData> {
   }
 
   List<DropdownMenuItem<Rekanan>> buildDropdownMenuItems2(List rekanans) {
-    List<DropdownMenuItem<Rekanan>> items2 = List();
+    List<DropdownMenuItem<Rekanan>> items2 = [];
     for (Rekanan rekanan in rekanans) {
       items2.add(
         DropdownMenuItem(
@@ -112,8 +112,8 @@ class _AddData extends State<AddData> {
     "Belanja Modal Komputer Personal"
   ];
 
-  File _foto;
-  PickedFile _pickedFile;
+  late File _foto;
+  late PickedFile _pickedFile;
   final _picker = ImagePicker();
   Future<void> _chooseImageFromCamera() async {
     _pickedFile = await _picker.getImage(source: ImageSource.camera);
@@ -286,7 +286,7 @@ class _AddData extends State<AddData> {
                       value: _selectedCompany,
                       hint: Text("Pilih data master"),
                       items: _dropdownMenuItems,
-                      onChanged: onChangeDropdownItem,
+                      onChanged: onChangeDropdownItem(_selectedCompany),
                     ),
                     // Container(
                     //   child : DropdownSearch<String>(
@@ -496,7 +496,7 @@ class _AddData extends State<AddData> {
                       style: primaryTextStyle,
                       readOnly: true,
                       onTap: () async {
-                        DateTime dateSPK = await showDatePicker(
+                        DateTime? dateSPK = await showDatePicker(
                           context: context,
                           initialDate: DateTime.now(),
                           firstDate: DateTime(2000),
@@ -608,7 +608,7 @@ class _AddData extends State<AddData> {
                       style: primaryTextStyle,
                       readOnly: true,
                       onTap: () async {
-                        DateTime dateBAST = await showDatePicker(
+                        DateTime? dateBAST = await showDatePicker(
                           context: context,
                           initialDate: DateTime.now(),
                           firstDate: DateTime(2000),
@@ -824,7 +824,7 @@ class _AddData extends State<AddData> {
                       dropdownColor: Colors.blue,
                       value: _selectedRekanan,
                       items: _dropdownMenuItems2,
-                      onChanged: onChangeDropdownItem2,
+                      onChanged: onChangeDropdownItem2(_selectedRekanan),
                     ),
                   ],
                 ),
@@ -921,7 +921,7 @@ class _AddData extends State<AddData> {
                       style: primaryTextStyle,
                       readOnly: true,
                       onTap: () async {
-                        DateTime dateBAST = await showDatePicker(
+                        DateTime? dateBAST = await showDatePicker(
                           context: context,
                           initialDate: DateTime.now(),
                           firstDate: DateTime(2000),
@@ -1063,7 +1063,37 @@ class _AddData extends State<AddData> {
 
     return Scaffold(
       backgroundColor: backgroundColor15,
-      appBar: header(),
+      appBar: AppBar(
+        title: Text(
+          'Tambah Dokumen',
+          style: secondTextStyle.copyWith(
+            fontSize: 18,
+            fontWeight: medium,
+          ),
+        ),
+        backgroundColor: backgroundColor2,
+        leading: IconButton(
+          icon: Icon(Icons.close),
+          color: Colors.white,
+          onPressed: () {
+            Navigator.pop(context);
+          },
+        ),
+        centerTitle: true,
+        elevation: 0,
+        actions: [
+          IconButton(
+            icon: Icon(
+              Icons.check,
+              color: primaryColor,
+            ),
+            onPressed: () {
+              showSuccessDialog();
+            },
+          ),
+        ],
+        foregroundColor: blck,
+      ),
       body: content(),
     );
     DropdownMenuItem<String> buildMenuItem(String item) => DropdownMenuItem(

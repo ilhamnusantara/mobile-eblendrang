@@ -15,14 +15,15 @@ class DokumenProvider with ChangeNotifier {
   //   return await DokumenService().getDokumens().toString();
   // }
 
-  Future<void> getDokumens() async {
+  Future<List<DokumenModel>> getDokumens() async {
     try {
       List<DokumenModel> dokumens = await DokumenService().getDokumens();
-      _dokumens = dokumens;
+      var _dokumens = dokumens;
       print(_dokumens);
       return _dokumens;
     } catch (e) {
       print(e);
     }
+    return [];
   }
 }

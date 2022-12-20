@@ -1,12 +1,10 @@
-
 import 'package:app_eblendrang/models/dokumen_model.dart';
 import 'package:app_eblendrang/themes.dart';
 import 'package:flutter/material.dart';
 
-class DataTitle extends StatefulWidget{
-  String keterangan_belanja, no_spk, no_bast, alamat;
+class DataTitle extends StatefulWidget {
   final DokumenModel dokumen;
-  DataTitle(this.dokumen);
+  DataTitle({required this.dokumen});
   // DataTitle({
   //   this.keterangan_belanja,
   //   this.no_spk,
@@ -20,7 +18,7 @@ class DataTitle extends StatefulWidget{
 
 class _DataTitleState extends State<DataTitle> {
   @override
-  Widget build(BuildContext context){
+  Widget build(BuildContext context) {
     return ListView(
       children: <Widget>[
         Container(
@@ -34,30 +32,30 @@ class _DataTitleState extends State<DataTitle> {
                   Container(
                     child: Text(
                       'With One Class',
-                      style: TextStyle(
-                          fontSize: 20, fontWeight: FontWeight.bold),
+                      style:
+                          TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
                     ),
                   ),
                   Container(
                     child: Column(
                       children: <Widget>[
                         Text(
-                          "${widget.keterangan_belanja}",
+                          "${widget.dokumen.keterangan_belanja}",
                           style: TextStyle(
                               fontSize: 24,
                               color: Colors.green,
                               fontWeight: FontWeight.bold),
                         ),
                         Text(
-                          "Email : ${widget.no_spk}",
+                          "Email : ${widget.dokumen.no_spk}",
                           style: TextStyle(fontSize: 16),
                         ),
                         Text(
-                          "Phone : ${widget.no_bast}",
+                          "Phone : ${widget.dokumen.no_bast}",
                           style: TextStyle(fontSize: 16),
                         ),
                         Text(
-                          "City : ${widget.alamat}",
+                          "City : ${widget.dokumen.alamat}",
                           style: TextStyle(fontSize: 16),
                         ),
                       ],

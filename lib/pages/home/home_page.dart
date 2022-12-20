@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'package:app_eblendrang/models/instansi_model.dart';
+import 'package:app_eblendrang/models/models.dart';
 import 'package:app_eblendrang/models/user_model.dart';
 import 'package:app_eblendrang/pages/widgets/instansi_title.dart';
 import 'package:app_eblendrang/providers/auth_provider.dart';
@@ -10,7 +11,6 @@ import 'package:provider/provider.dart';
 import 'package:http/http.dart' as http;
 
 class HomePage extends StatefulWidget {
-  HomePage({Key key}) : super(key: key);
   @override
   State<HomePage> createState() => _HomePageState();
 }
@@ -27,7 +27,7 @@ class _HomePageState extends State<HomePage> {
   Future<void> _getInstansi() async {
     try {
       final response =
-          await http.get(Uri.parse("http://e-blendrang.id/api/dokumenValue"));
+          await http.get(Uri.parse("http://103.23.198.126/api/dokumenValue"));
       if (response.statusCode == 200) {
         final data = jsonDecode(response.body)['data'] as List<dynamic>;
         setState(() {
@@ -46,7 +46,7 @@ class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     AuthProvider authProvider = Provider.of<AuthProvider>(context);
-    UserModel user = authProvider.user;
+    User user = authProvider.user;
 
     Widget header() {
       return Container(
@@ -62,14 +62,14 @@ class _HomePageState extends State<HomePage> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    'Hallo, ${user.name}',
+                    'Hallo, ${user.user.name}',
                     style: primaryTextStyle.copyWith(
                       fontSize: 24,
                       fontWeight: semiBold,
                     ),
                   ),
                   Text(
-                    '@${user.username}',
+                    '@${user.user.username}',
                     style: subtitleTextStyle.copyWith(
                       fontSize: 16,
                     ),

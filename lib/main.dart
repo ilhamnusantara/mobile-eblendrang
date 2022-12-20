@@ -31,7 +31,7 @@ class MyApp extends StatelessWidget {
       ],
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
-        initialRoute: '/home',
+        initialRoute: '/',
         routes: {
           '/': (context) => SpashScreenPage(),
           // '/': (context) => SplashScreen(),

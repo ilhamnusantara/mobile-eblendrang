@@ -1,18 +1,19 @@
 import 'dart:convert';
 
+import 'package:app_eblendrang/models/models.dart';
 import 'package:app_eblendrang/models/user_model.dart';
 import 'package:http/http.dart' as http;
 
-class AuthService{
+class AuthService {
   String baseUrl = 'http://103.23.198.126/api';
-  Future<UserModel> register({
-    String name,
-    String username,
-    String email,
-    String password,
-  }) async{
+  Future<User> register({
+    required String name,
+    required String username,
+    required String email,
+    required String password,
+  }) async {
     var url = '$baseUrl/register';
-    var header = {'Content-Type' : 'application/json'};
+    var header = {'Content-Type': 'application/json'};
     var body = jsonEncode({
       'name': name,
       'username': username,
@@ -28,22 +29,21 @@ class AuthService{
 
     print(response.body);
 
-    if(response.statusCode == 200){
+    if (response.statusCode == 200) {
       var data = jsonDecode(response.body)['data'];
-      UserModel user = UserModel.fromJson(data['user']);
-      user.token = 'bearer ' + data['access_token'];
+      User user = User.fromJson(data);
       return user;
-    }else{
+    } else {
       throw Exception('Gagal Register');
     }
   }
 
-  Future<UserModel> login({
-    String username,
-    String password,
-  }) async{
+  Future<User> login({
+    required String username,
+    required String password,
+  }) async {
     var url = '$baseUrl/login';
-    var header = {'Content-Type' : 'application/json'};
+    var header = {'Content-Type': 'application/json'};
     var body = jsonEncode({
       'username': username,
       'password': password,
@@ -57,12 +57,12 @@ class AuthService{
 
     print(response.body);
 
-    if(response.statusCode == 200){
+    if (response.statusCode == 200) {
       var data = jsonDecode(response.body)['data'];
-      UserModel user = UserModel.fromJson(data['user']);
-      user.token = 'bearer ' + data['access_token'];
+      // UserModel user = UserModel.fromJson(data['user']);
+      User user = User.fromJson(data);
       return user;
-    }else{
+    } else {
       throw Exception('Gagal Login');
     }
   }

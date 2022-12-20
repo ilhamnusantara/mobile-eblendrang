@@ -8,21 +8,19 @@ import 'package:image_picker/image_picker.dart';
 import 'package:intl/intl.dart';
 import 'package:http/http.dart' as http;
 
-class DetailPage extends StatefulWidget{
-  DetailPage({Key key}) : super(key: key) {
-  }
+class DetailPage extends StatefulWidget {
   @override
-  State<StatefulWidget> createState(){
+  State<StatefulWidget> createState() {
     return _DetailPage();
   }
 }
 
-class _DetailPage extends State<DetailPage>{
+class _DetailPage extends State<DetailPage> {
   var keterangan_belanja = "";
-  DokumenModel dokumen;
+  late DokumenModel dokumen;
   // List data = widget.dokumen;
   @override
-  void initState(){
+  void initState() {
     super.initState();
     dateInput.text = "";
     dateInput2.text = "";
@@ -31,7 +29,6 @@ class _DetailPage extends State<DetailPage>{
 
   @override
   void didChangeDependencies() {
-
     var dokumenString = ModalRoute.of(context)?.settings.arguments as String;
     print('page 2');
     print(dokumenString);
@@ -40,33 +37,30 @@ class _DetailPage extends State<DetailPage>{
     print(dokumenJson);
 
     setState(() {
-
       dokumen = DokumenModel.fromJson(dokumenJson);
       keterangan_belanja = dokumen.keterangan_belanja;
-
     });
 
     super.didChangeDependencies();
   }
+
   TextEditingController dateInput = TextEditingController();
   TextEditingController dateInput2 = TextEditingController();
-  File _foto;
-  PickedFile _pickedFile;
+  late File _foto;
+  late PickedFile _pickedFile;
   final _picker = ImagePicker();
 
-  Future<void> _chooseImageFromCamera() async
-  {
+  Future<void> _chooseImageFromCamera() async {
     _pickedFile = await _picker.getImage(source: ImageSource.camera);
-    if(_pickedFile != null)
-      {
-        setState(() {
-          _foto = File(_pickedFile.path);
-        });
-      }
+    if (_pickedFile != null) {
+      setState(() {
+        _foto = File(_pickedFile.path);
+      });
+    }
   }
+
   @override
-  Future<bool> _uploadFoto(int id_dokumen, File foto) async
-  {
+  Future<bool> _uploadFoto(int id_dokumen, File foto) async {
     final bytes = foto.readAsBytesSync();
     final data = {
       "id_dokumen": base64Encode(bytes),
@@ -78,21 +72,22 @@ class _DetailPage extends State<DetailPage>{
       body: jsonEncode(data),
     );
     final message = jsonDecode(response.body);
-    if(message == 1){
+    if (message == 1) {
       return true;
-    }else{
+    } else {
       return false;
     }
   }
+
   @override
   Widget build(BuildContext context) {
-    Widget header(){
+    Widget header() {
       return AppBar(
         backgroundColor: backgroundColor2,
         leading: IconButton(
           icon: Icon(Icons.close),
           color: Colors.white,
-          onPressed: (){
+          onPressed: () {
             Navigator.pop(context);
           },
         ),
@@ -111,14 +106,14 @@ class _DetailPage extends State<DetailPage>{
               Icons.check,
               color: primaryColor,
             ),
-            onPressed: (){},
+            onPressed: () {},
           ),
         ],
         foregroundColor: blck,
       );
     }
 
-    Widget nameInstansi(){
+    Widget nameInstansi() {
       return Container(
         margin: EdgeInsets.only(top: 10),
         child: Column(
@@ -134,7 +129,7 @@ class _DetailPage extends State<DetailPage>{
               ),
             ),
             SizedBox(
-              height:12,
+              height: 12,
             ),
             Container(
               height: 40,
@@ -150,19 +145,18 @@ class _DetailPage extends State<DetailPage>{
                     ),
                     Expanded(
                         child: TextFormField(
-                          readOnly: true,
-                          style: primaryTextStyle,
-                          decoration: InputDecoration(
-                            hintText: ''+(dokumen.instansi.nama_instansi),
-                            // hintStyle: inputStyle,
-                            enabledBorder: UnderlineInputBorder(
-                              borderSide: BorderSide(
-                                color: grayChoose,
-                              ),
-                            ),
+                      readOnly: true,
+                      style: primaryTextStyle,
+                      decoration: InputDecoration(
+                        hintText: '' + (dokumen.instansi.nama_instansi),
+                        // hintStyle: inputStyle,
+                        enabledBorder: UnderlineInputBorder(
+                          borderSide: BorderSide(
+                            color: grayChoose,
                           ),
-                        )
-                    ),
+                        ),
+                      ),
+                    )),
                   ],
                 ),
               ),
@@ -171,7 +165,8 @@ class _DetailPage extends State<DetailPage>{
         ),
       );
     }
-    Widget noSPK(){
+
+    Widget noSPK() {
       return Container(
         margin: EdgeInsets.only(top: 10),
         child: Column(
@@ -185,7 +180,7 @@ class _DetailPage extends State<DetailPage>{
               ),
             ),
             SizedBox(
-              height:12,
+              height: 12,
             ),
             Container(
               height: 40,
@@ -201,18 +196,17 @@ class _DetailPage extends State<DetailPage>{
                     ),
                     Expanded(
                         child: TextFormField(
-                          style: primaryTextStyle,
-                          decoration: InputDecoration(
-                            hintText: ''+(dokumen.no_spk.toString()),
-                            hintStyle: inputStyle,
-                            enabledBorder: UnderlineInputBorder(
-                              borderSide: BorderSide(
-                                color: grayChoose,
-                              ),
-                            ),
+                      style: primaryTextStyle,
+                      decoration: InputDecoration(
+                        hintText: '' + (dokumen.no_spk.toString()),
+                        hintStyle: inputStyle,
+                        enabledBorder: UnderlineInputBorder(
+                          borderSide: BorderSide(
+                            color: grayChoose,
                           ),
-                        )
-                    ),
+                        ),
+                      ),
+                    )),
                   ],
                 ),
               ),
@@ -221,7 +215,8 @@ class _DetailPage extends State<DetailPage>{
         ),
       );
     }
-    Widget dateSPK(){
+
+    Widget dateSPK() {
       return Container(
         margin: EdgeInsets.only(top: 10),
         child: Column(
@@ -235,7 +230,7 @@ class _DetailPage extends State<DetailPage>{
               ),
             ),
             SizedBox(
-              height:12,
+              height: 12,
             ),
             Container(
               height: 40,
@@ -251,30 +246,30 @@ class _DetailPage extends State<DetailPage>{
                     ),
                     Expanded(
                         child: TextFormField(
-                          controller: dateInput,
-                          style: primaryTextStyle,
-                          readOnly: true,
-                          onTap: () async{
-                            DateTime dateSPK = dokumen.tanggal_spk;
-                            dateSPK = await showDatePicker(
-                                context: context,
-                                initialDate: dokumen.tanggal_spk,
-                                firstDate: DateTime(2000),
-                                lastDate: DateTime(2101),
-                            );
-                            if(dateSPK != null){
-                              print(dateSPK);
-                              String formattedDate = DateFormat('dd-MM-yyyy').format(dateSPK);
-                              print(formattedDate);
-                              setState((){
-                                dateInput.text = formattedDate;
-                              });
-                            }else{
-                              print("Tanggal Kosong");
-                            }
-                          },
-                        )
-                    ),
+                      controller: dateInput,
+                      style: primaryTextStyle,
+                      readOnly: true,
+                      onTap: () async {
+                        DateTime? dateSPK = dokumen.tanggal_spk;
+                        dateSPK = await showDatePicker(
+                          context: context,
+                          initialDate: dokumen.tanggal_spk,
+                          firstDate: DateTime(2000),
+                          lastDate: DateTime(2101),
+                        );
+                        if (dateSPK != null) {
+                          print(dateSPK);
+                          String formattedDate =
+                              DateFormat('dd-MM-yyyy').format(dateSPK);
+                          print(formattedDate);
+                          setState(() {
+                            dateInput.text = formattedDate;
+                          });
+                        } else {
+                          print("Tanggal Kosong");
+                        }
+                      },
+                    )),
                   ],
                 ),
               ),
@@ -283,7 +278,8 @@ class _DetailPage extends State<DetailPage>{
         ),
       );
     }
-    Widget noBAST(){
+
+    Widget noBAST() {
       return Container(
         margin: EdgeInsets.only(top: 10),
         child: Column(
@@ -297,7 +293,7 @@ class _DetailPage extends State<DetailPage>{
               ),
             ),
             SizedBox(
-              height:12,
+              height: 12,
             ),
             Container(
               height: 40,
@@ -313,18 +309,17 @@ class _DetailPage extends State<DetailPage>{
                     ),
                     Expanded(
                         child: TextFormField(
-                          style: primaryTextStyle,
-                          decoration: InputDecoration(
-                            hintText: ''+(dokumen.no_bast.toString()),
-                            hintStyle: inputStyle,
-                            enabledBorder: UnderlineInputBorder(
-                              borderSide: BorderSide(
-                                color: grayChoose,
-                              ),
-                            ),
+                      style: primaryTextStyle,
+                      decoration: InputDecoration(
+                        hintText: '' + (dokumen.no_bast.toString()),
+                        hintStyle: inputStyle,
+                        enabledBorder: UnderlineInputBorder(
+                          borderSide: BorderSide(
+                            color: grayChoose,
                           ),
-                        )
-                    ),
+                        ),
+                      ),
+                    )),
                   ],
                 ),
               ),
@@ -333,7 +328,8 @@ class _DetailPage extends State<DetailPage>{
         ),
       );
     }
-    Widget dateBAST(){
+
+    Widget dateBAST() {
       return Container(
         margin: EdgeInsets.only(top: 10),
         child: Column(
@@ -347,7 +343,7 @@ class _DetailPage extends State<DetailPage>{
               ),
             ),
             SizedBox(
-              height:12,
+              height: 12,
             ),
             Container(
               height: 40,
@@ -363,29 +359,29 @@ class _DetailPage extends State<DetailPage>{
                     ),
                     Expanded(
                         child: TextFormField(
-                          controller: dateInput2,
-                          style: primaryTextStyle,
-                          readOnly: true,
-                          onTap: () async{
-                            DateTime dateBAST = await showDatePicker(
-                              context: context,
-                              initialDate: DateTime.now(),
-                              firstDate: DateTime(2000),
-                              lastDate: DateTime(2101),
-                            );
-                            if(dateBAST != null){
-                              print(dateBAST);
-                                String formattedDate = DateFormat('dd-MM-yyyy').format(dateBAST);
-                              print(formattedDate);
-                              setState((){
-                                dateInput2.text = formattedDate;
-                              });
-                            }else{
-                              print("Tanggal Kosong");
-                            }
-                          },
-                        )
-                    ),
+                      controller: dateInput2,
+                      style: primaryTextStyle,
+                      readOnly: true,
+                      onTap: () async {
+                        DateTime? dateBAST = await showDatePicker(
+                          context: context,
+                          initialDate: DateTime.now(),
+                          firstDate: DateTime(2000),
+                          lastDate: DateTime(2101),
+                        );
+                        if (dateBAST != null) {
+                          print(dateBAST);
+                          String formattedDate =
+                              DateFormat('dd-MM-yyyy').format(dateBAST);
+                          print(formattedDate);
+                          setState(() {
+                            dateInput2.text = formattedDate;
+                          });
+                        } else {
+                          print("Tanggal Kosong");
+                        }
+                      },
+                    )),
                   ],
                 ),
               ),
@@ -395,7 +391,7 @@ class _DetailPage extends State<DetailPage>{
       );
     }
 
-    Widget button(){
+    Widget button() {
       return Container(
         margin: EdgeInsets.only(
           top: 30,
@@ -406,78 +402,75 @@ class _DetailPage extends State<DetailPage>{
           children: [
             Expanded(
                 child: TextButton(
-                  onPressed: () {
-                    Navigator.pushNamed(context, '/pdf');
-                  },
-                  child: Text(
-                      "File SPK",
-                    style: secondTextStyle.copyWith(
-                      fontSize: 16,
-                      fontWeight: medium,
-                    ),
-                  ),
-                  style: TextButton.styleFrom(
-                    backgroundColor: backgroundColor12,
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(12),
-                    ),
-                  ),
-                  // color: Colors.black,
-                  // textColor: Colors.white,
-                )
-            ),
+              onPressed: () {
+                Navigator.pushNamed(context, '/pdf');
+              },
+              child: Text(
+                "File SPK",
+                style: secondTextStyle.copyWith(
+                  fontSize: 16,
+                  fontWeight: medium,
+                ),
+              ),
+              style: TextButton.styleFrom(
+                backgroundColor: backgroundColor12,
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(12),
+                ),
+              ),
+              // color: Colors.black,
+              // textColor: Colors.white,
+            )),
             SizedBox(
               width: 8,
             ),
             Expanded(
                 child: TextButton(
-                  onPressed: _chooseImageFromCamera,
-                  child: Text(
-                    "Foto",
-                    style: secondTextStyle.copyWith(
-                      fontSize: 16,
-                      fontWeight: medium,
-                    ),
-                  ),
-                  style: TextButton.styleFrom(
-                    backgroundColor: backgroundColor12,
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(12),
-                    ),
-                  ),
-                  // color: Colors.black,
-                  // textColor: Colors.white,
-                )
-            ),
+              onPressed: _chooseImageFromCamera,
+              child: Text(
+                "Foto",
+                style: secondTextStyle.copyWith(
+                  fontSize: 16,
+                  fontWeight: medium,
+                ),
+              ),
+              style: TextButton.styleFrom(
+                backgroundColor: backgroundColor12,
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(12),
+                ),
+              ),
+              // color: Colors.black,
+              // textColor: Colors.white,
+            )),
             SizedBox(
               width: 8,
             ),
             Expanded(
                 child: TextButton(
-                  onPressed: () {},
-                  child: Text(
-                    "File BAST",
-                    style: secondTextStyle.copyWith(
-                      fontSize: 16,
-                      fontWeight: medium,
-                    ),
-                  ),
-                  style: TextButton.styleFrom(
-                    backgroundColor: backgroundColor12,
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(12),
-                    ),
-                  ),
-                  // color: Colors.black,
-                  // textColor: Colors.white,
-                )
-            ),
+              onPressed: () {},
+              child: Text(
+                "File BAST",
+                style: secondTextStyle.copyWith(
+                  fontSize: 16,
+                  fontWeight: medium,
+                ),
+              ),
+              style: TextButton.styleFrom(
+                backgroundColor: backgroundColor12,
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(12),
+                ),
+              ),
+              // color: Colors.black,
+              // textColor: Colors.white,
+            )),
           ],
         ),
       );
     }
 
-    Widget content(){
+    Widget content() {
       return Container(
         width: double.infinity,
         padding: EdgeInsets.symmetric(
@@ -494,10 +487,13 @@ class _DetailPage extends State<DetailPage>{
               ),
               child: Column(
                 children: [
-                  Text(''+ (dokumen.keterangan_belanja), style: primaryTextStyle.copyWith(
-                    fontSize: 25,
-                    fontWeight: reguler,
-                  ),),
+                  Text(
+                    '' + (dokumen.keterangan_belanja),
+                    style: primaryTextStyle.copyWith(
+                      fontSize: 25,
+                      fontWeight: reguler,
+                    ),
+                  ),
                 ],
               ),
             ),
@@ -512,11 +508,40 @@ class _DetailPage extends State<DetailPage>{
         ),
       );
     }
+
     return Scaffold(
       backgroundColor: backgroundColor15,
       resizeToAvoidBottomInset: false,
-      appBar: header(),
-      body :content(),
+      appBar: AppBar(
+        backgroundColor: backgroundColor2,
+        leading: IconButton(
+          icon: Icon(Icons.close),
+          color: Colors.white,
+          onPressed: () {
+            Navigator.pop(context);
+          },
+        ),
+        centerTitle: true,
+        elevation: 0,
+        title: Text(
+          'Detail Dokumen',
+          style: secondTextStyle.copyWith(
+            fontSize: 18,
+            fontWeight: medium,
+          ),
+        ),
+        actions: [
+          IconButton(
+            icon: Icon(
+              Icons.check,
+              color: primaryColor,
+            ),
+            onPressed: () {},
+          ),
+        ],
+        foregroundColor: blck,
+      ),
+      body: content(),
     );
   }
 }

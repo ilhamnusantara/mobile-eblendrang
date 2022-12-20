@@ -1,16 +1,17 @@
+import 'package:app_eblendrang/models/models.dart';
 import 'package:flutter/material.dart';
 import 'package:app_eblendrang/themes.dart';
 import 'package:app_eblendrang/providers/auth_provider.dart';
 import 'package:provider/provider.dart';
 import '../models/user_model.dart';
 
-class EditProfilePage extends StatelessWidget{
+class EditProfilePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     AuthProvider authProvider = Provider.of<AuthProvider>(context);
-    UserModel user = authProvider.user;
+    User user = authProvider.user;
 
-    Widget header(){
+    Widget header() {
       return AppBar(
         backgroundColor: backgroundColor2,
         centerTitle: true,
@@ -23,22 +24,24 @@ class EditProfilePage extends StatelessWidget{
         ),
         actions: [
           IconButton(
-              icon: Container(
-                child: Image.asset(
-                    'assets/icon_logout.png',
-                  width: 25,
-                ),
+            icon: Container(
+              child: Image.asset(
+                'assets/icon_logout.png',
+                width: 25,
               ),
-              onPressed: (){
-                Navigator.pushNamedAndRemoveUntil(context, '/sign-in', (route) => false);
-              },
+            ),
+            onPressed: () {
+              Navigator.pushNamedAndRemoveUntil(
+                  context, '/sign-in', (route) => false);
+            },
           ),
         ],
         elevation: 0,
         foregroundColor: blck,
       );
     }
-    Widget nameInput(){
+
+    Widget nameInput() {
       return Container(
         margin: EdgeInsets.only(
           top: 30,
@@ -54,7 +57,7 @@ class EditProfilePage extends StatelessWidget{
             ),
             TextFormField(
               decoration: InputDecoration(
-                hintText: user.name,
+                hintText: user.user.name,
                 hintStyle: subtitleTextStyle,
                 enabledBorder: UnderlineInputBorder(
                   borderSide: BorderSide(
@@ -67,7 +70,8 @@ class EditProfilePage extends StatelessWidget{
         ),
       );
     }
-    Widget userNameInput(){
+
+    Widget userNameInput() {
       return Container(
         margin: EdgeInsets.only(
           top: 30,
@@ -83,7 +87,7 @@ class EditProfilePage extends StatelessWidget{
             ),
             TextFormField(
               decoration: InputDecoration(
-                hintText: user.username,
+                hintText: user.user.username,
                 hintStyle: subtitleTextStyle,
                 enabledBorder: UnderlineInputBorder(
                   borderSide: BorderSide(
@@ -96,7 +100,8 @@ class EditProfilePage extends StatelessWidget{
         ),
       );
     }
-    Widget instansi(){
+
+    Widget instansi() {
       return Container(
         margin: EdgeInsets.only(
           top: 30,
@@ -113,7 +118,7 @@ class EditProfilePage extends StatelessWidget{
             TextFormField(
               readOnly: true,
               decoration: InputDecoration(
-                hintText: user.instansi.nama_instansi,
+                hintText: user.user.instansi.namaInstansi,
                 hintStyle: subtitleTextStyle,
                 enabledBorder: UnderlineInputBorder(
                   borderSide: BorderSide(
@@ -126,7 +131,8 @@ class EditProfilePage extends StatelessWidget{
         ),
       );
     }
-    Widget currentPassword(){
+
+    Widget currentPassword() {
       return Container(
         margin: EdgeInsets.only(
           top: 30,
@@ -156,7 +162,8 @@ class EditProfilePage extends StatelessWidget{
         ),
       );
     }
-    Widget newPassword(){
+
+    Widget newPassword() {
       return Container(
         margin: EdgeInsets.only(
           top: 30,
@@ -186,7 +193,8 @@ class EditProfilePage extends StatelessWidget{
         ),
       );
     }
-    Widget confirmPassword(){
+
+    Widget confirmPassword() {
       return Container(
         margin: EdgeInsets.only(
           top: 30,
@@ -216,13 +224,14 @@ class EditProfilePage extends StatelessWidget{
         ),
       );
     }
-    Widget signInButton(){
+
+    Widget signInButton() {
       return Container(
         height: 50,
         width: double.infinity,
         margin: EdgeInsets.only(top: 30, bottom: 50),
         child: TextButton(
-          onPressed: (){},
+          onPressed: () {},
           style: TextButton.styleFrom(
             backgroundColor: backgroundColor12,
             shape: RoundedRectangleBorder(
@@ -240,52 +249,78 @@ class EditProfilePage extends StatelessWidget{
       );
     }
 
-    Widget content(){
+    Widget content() {
       return SingleChildScrollView(
         child: Stack(
           children: <Widget>[
             new Container(
               width: double.infinity,
-                padding: EdgeInsets.symmetric(
-                  horizontal: marginLogin,
-                ),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [
-                    Container(
-                      width: 100,
-                      height: 100,
-                      margin: EdgeInsets.only(
-                        top: marginLogin,
-                      ),
-                      decoration: BoxDecoration(
-                        shape: BoxShape.circle,
-                        image: DecorationImage(
-                          image: AssetImage(
-                            'assets/icon_email.png',
-                          ),
+              padding: EdgeInsets.symmetric(
+                horizontal: marginLogin,
+              ),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  Container(
+                    width: 100,
+                    height: 100,
+                    margin: EdgeInsets.only(
+                      top: marginLogin,
+                    ),
+                    decoration: BoxDecoration(
+                      shape: BoxShape.circle,
+                      image: DecorationImage(
+                        image: AssetImage(
+                          'assets/icon_email.png',
                         ),
                       ),
                     ),
-                    nameInput(),
-                    userNameInput(),
-                    instansi(),
-                    currentPassword(),
-                    newPassword(),
-                    confirmPassword(),
-                    signInButton(),
-
-                  ],
-                ),
+                  ),
+                  nameInput(),
+                  userNameInput(),
+                  instansi(),
+                  currentPassword(),
+                  newPassword(),
+                  confirmPassword(),
+                  signInButton(),
+                ],
               ),
+            ),
           ],
         ),
       );
     }
+
     return Scaffold(
       backgroundColor: backgroundColor15,
-      appBar: header(),
-      body :content(),
+      appBar: AppBar(
+        backgroundColor: backgroundColor2,
+        centerTitle: true,
+        title: Text(
+          'Profile',
+          style: secondTextStyle.copyWith(
+            fontSize: 18,
+            fontWeight: semiBold,
+          ),
+        ),
+        actions: [
+          IconButton(
+            icon: Container(
+              child: Image.asset(
+                'assets/icon_logout.png',
+                width: 25,
+              ),
+            ),
+            onPressed: () {
+              Navigator.pushNamedAndRemoveUntil(
+                  context, '/sign-in', (route) => false);
+            },
+          ),
+        ],
+        elevation: 0,
+        foregroundColor: blck,
+      ),
+      body: content(),
       resizeToAvoidBottomInset: false, //untuk biar tidak eror / gambar jelek
     );
   }

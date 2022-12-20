@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'dart:math';
 
 import 'package:app_eblendrang/models/dokumen_model.dart';
+import 'package:app_eblendrang/models/models.dart';
 import 'package:app_eblendrang/models/user_model.dart';
 import 'package:app_eblendrang/pages/detail_dokumen.dart';
 import 'package:app_eblendrang/pages/widgets/dokumen_title.dart';
@@ -14,15 +15,12 @@ import 'package:provider/provider.dart';
 import 'package:http/http.dart' as http;
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 
-
-class DokumenPage extends StatefulWidget{
-  DokumenPage({Key key}) : super(key: key);
+class DokumenPage extends StatefulWidget {
   @override
-  State<DokumenPage> createState()=> _DokumenPageState();
+  State<DokumenPage> createState() => _DokumenPageState();
 }
 
-class _DokumenPageState extends State<DokumenPage>{
-
+class _DokumenPageState extends State<DokumenPage> {
   // bool fileSpk = false;
   // bool fileBast = false;
   // bool foto = false;
@@ -31,11 +29,10 @@ class _DokumenPageState extends State<DokumenPage>{
   List<DokumenModel> allDokumens = [];
   List<DokumenModel> filteredDokumens = [];
   Future<void> _getData() async {
-    try{
-      final response = await http.get(Uri.parse(
-          "http://e-blendrang.id/api/dokumens"
-      ));
-      if (response.statusCode == 200){
+    try {
+      final response =
+          await http.get(Uri.parse("http://103.23.198.126/api/dokumens"));
+      if (response.statusCode == 200) {
         final data = jsonDecode(response.body)['data'] as List<dynamic>;
         setState(() {
           allDokumens = [];
@@ -44,40 +41,40 @@ class _DokumenPageState extends State<DokumenPage>{
           print(data);
         });
       }
-    } catch (e){
+    } catch (e) {
       print(e);
     }
   }
+
   @override
-  void initState(){
+  void initState() {
     super.initState();
     _getData();
   }
 
-  void _runFilter(String text){
+  void _runFilter(String text) {
     filteredDokumens.clear();
-    if(text.isEmpty){
+    if (text.isEmpty) {
       setState(() {});
       return;
     }
-    allDokumens.forEach((data){
-      if(data.keterangan_belanja
-      .toString()
-      .toLowerCase()
-      .contains(text.toLowerCase().toString())){
+    allDokumens.forEach((data) {
+      if (data.keterangan_belanja
+          .toString()
+          .toLowerCase()
+          .contains(text.toLowerCase().toString())) {
         filteredDokumens.add(data);
       }
     });
     setState(() {});
-
   }
 
   @override
   Widget build(BuildContext context) {
     AuthProvider authProvider = Provider.of<AuthProvider>(context);
-    UserModel user = authProvider.user;
+    User user = authProvider.user;
 
-    Widget header(){
+    Widget header() {
       return Container(
         margin: EdgeInsets.only(
           top: 30,
@@ -91,14 +88,14 @@ class _DokumenPageState extends State<DokumenPage>{
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    'Hallo, ${user.name}',
+                    'Hallo, ${user.user.name}',
                     style: primaryTextStyle.copyWith(
                       fontSize: 24,
                       fontWeight: semiBold,
                     ),
                   ),
                   Text(
-                    '@${user.username}',
+                    '@${user.user.username}',
                     style: subtitleTextStyle.copyWith(
                       fontSize: 16,
                     ),
@@ -107,18 +104,20 @@ class _DokumenPageState extends State<DokumenPage>{
               ),
             ),
             GestureDetector(
-              onTap: (){
+              onTap: () {
                 Navigator.pushNamed(
                   context,
                   '/edit-profile',
                 );
               },
-              child: Container (
+              child: Container(
                 width: 54,
                 height: 54,
                 decoration: BoxDecoration(
                   shape: BoxShape.circle,
-                  image: DecorationImage(image: AssetImage('assets/icon_email.png'),),
+                  image: DecorationImage(
+                    image: AssetImage('assets/icon_email.png'),
+                  ),
                 ),
               ),
             ),
@@ -126,9 +125,10 @@ class _DokumenPageState extends State<DokumenPage>{
         ),
       );
     }
-    Widget titlePage(){
+
+    Widget titlePage() {
       return Container(
-        margin : EdgeInsets.only(
+        margin: EdgeInsets.only(
           top: 50,
           left: marginLogin,
           right: marginLogin,
@@ -142,242 +142,250 @@ class _DokumenPageState extends State<DokumenPage>{
         ),
       );
     }
-    Widget search(){
+
+    Widget search() {
       return Container(
         margin: EdgeInsets.only(
-          top :8,
+          top: 8,
           left: marginLogin,
           right: marginLogin,
         ),
         child: TextField(
           onChanged: _runFilter,
           decoration: const InputDecoration(
-            labelText: 'Search Pekerjaan', suffixIcon: Icon(Icons.search)
-          ),
+              labelText: 'Search Pekerjaan', suffixIcon: Icon(Icons.search)),
         ),
       );
     }
-    Widget item(){
+
+    Widget item() {
       return Container(
-        margin: EdgeInsets.only(
-          top :10,
-          left: marginLogin,
-          right: marginLogin,
-        ),
-        child: filteredDokumens.length == 0
-          ? ListView.builder(
-            shrinkWrap: true,
-            itemCount: allDokumens.length,
-            itemBuilder: (BuildContext context, int index){
-              return GestureDetector(
-                  onTap: () {
-                    Navigator.of(context).pushNamed('/detailDokumen', arguments: jsonEncode(allDokumens[index]));
-                  },
-                  child: new Card(
-                    elevation: 12,
-                    color: backgroundColor13,
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(12),
-                    ),
-                    child: Row(
-                      children: [
-                        SizedBox(
-                          width: 15,
+          margin: EdgeInsets.only(
+            top: 10,
+            left: marginLogin,
+            right: marginLogin,
+          ),
+          child: filteredDokumens.length == 0
+              ? ListView.builder(
+                  shrinkWrap: true,
+                  itemCount: allDokumens.length,
+                  itemBuilder: (BuildContext context, int index) {
+                    return GestureDetector(
+                      onTap: () {
+                        Navigator.of(context).pushNamed('/detailDokumen',
+                            arguments: jsonEncode(allDokumens[index]));
+                      },
+                      child: new Card(
+                        elevation: 12,
+                        color: backgroundColor13,
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(12),
                         ),
-                        Container(
-                          width: 40,
-                          height: 80,
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(5),
-                            image: DecorationImage(
-                              image: AssetImage(
-                                'assets/icon_goverment.png',
-                              ),
-                            ),
-                          ),
-                        ),
-                        SizedBox(
-                          width: 12,
-                        ),
-                        Expanded(
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text(
-                                '${allDokumens[index].keterangan_belanja}',
-                                style: primaryTextStyle.copyWith(
-                                  fontWeight: semiBold,
-                                ),
-                              ),
-                              Text(
-                                '${allDokumens[index].instansi.nama_instansi}',
-                                style: subtitleTextStyle.copyWith(
-                                  fontWeight: light,
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
-                        Container (
-                          width: 23,
-                          height: 23,
-                          decoration: BoxDecoration(
-                            shape: BoxShape.circle,
-                            image: DecorationImage(image: AssetImage('assets/icon_information.png'),),
-                          ),
-                        ),
-                        SizedBox(
-                          width: 15,
-                        ),
-                      ],
-                    ),
-                  ),
-                );
-            }
-        )
-       : ListView.builder(
-            shrinkWrap: true,
-            itemCount: filteredDokumens.length,
-            itemBuilder: (BuildContext context, int index){
-              return GestureDetector(
-                onTap: () {
-                  Navigator.of(context).pushNamed('/detailDokumen', arguments: jsonEncode(filteredDokumens[index]));
-                },
-                child: new Card(
-                  elevation: 12,
-                  color: backgroundColor13,
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(12),
-                  ),
-                  child: Row(
-                    children: [
-                      SizedBox(
-                        width: 15,
-                      ),
-                      Container(
-                        width: 40,
-                        height: 80,
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(5),
-                          image: DecorationImage(
-                            image: AssetImage(
-                              'assets/icon_goverment.png',
-                            ),
-                          ),
-                        ),
-                      ),
-                      SizedBox(
-                        width: 12,
-                      ),
-                      Expanded(
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
+                        child: Row(
                           children: [
-                            Text(
-                              '${filteredDokumens[index].keterangan_belanja}',
-                              style: primaryTextStyle.copyWith(
-                                fontWeight: semiBold,
+                            SizedBox(
+                              width: 15,
+                            ),
+                            Container(
+                              width: 40,
+                              height: 80,
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(5),
+                                image: DecorationImage(
+                                  image: AssetImage(
+                                    'assets/icon_goverment.png',
+                                  ),
+                                ),
                               ),
                             ),
-                            Text(
-                              '${filteredDokumens[index].instansi.nama_instansi}',
-                              style: subtitleTextStyle.copyWith(
-                                fontWeight: light,
+                            SizedBox(
+                              width: 12,
+                            ),
+                            Expanded(
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text(
+                                    '${allDokumens[index].keterangan_belanja}',
+                                    style: primaryTextStyle.copyWith(
+                                      fontWeight: semiBold,
+                                    ),
+                                  ),
+                                  Text(
+                                    '${allDokumens[index].instansi.nama_instansi}',
+                                    style: subtitleTextStyle.copyWith(
+                                      fontWeight: light,
+                                    ),
+                                  ),
+                                ],
                               ),
+                            ),
+                            Container(
+                              width: 23,
+                              height: 23,
+                              decoration: BoxDecoration(
+                                shape: BoxShape.circle,
+                                image: DecorationImage(
+                                  image:
+                                      AssetImage('assets/icon_information.png'),
+                                ),
+                              ),
+                            ),
+                            SizedBox(
+                              width: 15,
                             ),
                           ],
                         ),
                       ),
-                      Container (
-                        width: 23,
-                        height: 23,
-                        decoration: BoxDecoration(
-                          shape: BoxShape.circle,
-                          image: DecorationImage(image: AssetImage('assets/icon_information.png'),),
+                    );
+                  })
+              : ListView.builder(
+                  shrinkWrap: true,
+                  itemCount: filteredDokumens.length,
+                  itemBuilder: (BuildContext context, int index) {
+                    return GestureDetector(
+                      onTap: () {
+                        Navigator.of(context).pushNamed('/detailDokumen',
+                            arguments: jsonEncode(filteredDokumens[index]));
+                      },
+                      child: new Card(
+                        elevation: 12,
+                        color: backgroundColor13,
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(12),
+                        ),
+                        child: Row(
+                          children: [
+                            SizedBox(
+                              width: 15,
+                            ),
+                            Container(
+                              width: 40,
+                              height: 80,
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(5),
+                                image: DecorationImage(
+                                  image: AssetImage(
+                                    'assets/icon_goverment.png',
+                                  ),
+                                ),
+                              ),
+                            ),
+                            SizedBox(
+                              width: 12,
+                            ),
+                            Expanded(
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text(
+                                    '${filteredDokumens[index].keterangan_belanja}',
+                                    style: primaryTextStyle.copyWith(
+                                      fontWeight: semiBold,
+                                    ),
+                                  ),
+                                  Text(
+                                    '${filteredDokumens[index].instansi.nama_instansi}',
+                                    style: subtitleTextStyle.copyWith(
+                                      fontWeight: light,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                            Container(
+                              width: 23,
+                              height: 23,
+                              decoration: BoxDecoration(
+                                shape: BoxShape.circle,
+                                image: DecorationImage(
+                                  image:
+                                      AssetImage('assets/icon_information.png'),
+                                ),
+                              ),
+                            ),
+                            SizedBox(
+                              width: 15,
+                            ),
+                          ],
                         ),
                       ),
-                      SizedBox(
-                        width: 15,
-                      ),
-                    ],
-                  ),
-                ),
-              );
-            }
-        )
-        // child: ListView.builder(
-        //     shrinkWrap: true,
-        //     itemCount: filteredDokumens.length,
-        //     itemBuilder: (BuildContext context, index){
-        //       return GestureDetector(
-        //         onTap: () {
-        //           Navigator.of(context).pushNamed('/detailDokumen', arguments: jsonEncode(filteredDokumens[index]));
-        //         },
-        //         child: new Card(
-        //           elevation: 12,
-        //           color: backgroundColor13,
-        //           shape: RoundedRectangleBorder(
-        //             borderRadius: BorderRadius.circular(12),
-        //           ),
-        //           child: Row(
-        //             children: [
-        //               SizedBox(
-        //                 width: 15,
-        //               ),
-        //               Container(
-        //                 width: 40,
-        //                 height: 80,
-        //                 decoration: BoxDecoration(
-        //                   borderRadius: BorderRadius.circular(5),
-        //                   image: DecorationImage(
-        //                     image: AssetImage(
-        //                       'assets/icon_goverment.png',
-        //                     ),
-        //                   ),
-        //                 ),
-        //               ),
-        //               SizedBox(
-        //                 width: 12,
-        //               ),
-        //               Expanded(
-        //                 child: Column(
-        //                   crossAxisAlignment: CrossAxisAlignment.start,
-        //                   children: [
-        //                     Text(
-        //                       '${filteredDokumens[index].keterangan_belanja}',
-        //                       style: primaryTextStyle.copyWith(
-        //                         fontWeight: semiBold,
-        //                       ),
-        //                     ),
-        //                     Text(
-        //                       '${filteredDokumens[index].instansi.nama_instansi}',
-        //                       style: subtitleTextStyle.copyWith(
-        //                         fontWeight: light,
-        //                       ),
-        //                     ),
-        //                   ],
-        //                 ),
-        //               ),
-        //               Container (
-        //                 width: 23,
-        //                 height: 23,
-        //                 decoration: BoxDecoration(
-        //                   shape: BoxShape.circle,
-        //                   image: DecorationImage(image: AssetImage('assets/icon_information.png'),),
-        //                 ),
-        //               ),
-        //               SizedBox(
-        //                 width: 15,
-        //               ),
-        //             ],
-        //           ),
-        //         ),
-        //       );
-        //     }
-        // ),
+                    );
+                  })
+          // child: ListView.builder(
+          //     shrinkWrap: true,
+          //     itemCount: filteredDokumens.length,
+          //     itemBuilder: (BuildContext context, index){
+          //       return GestureDetector(
+          //         onTap: () {
+          //           Navigator.of(context).pushNamed('/detailDokumen', arguments: jsonEncode(filteredDokumens[index]));
+          //         },
+          //         child: new Card(
+          //           elevation: 12,
+          //           color: backgroundColor13,
+          //           shape: RoundedRectangleBorder(
+          //             borderRadius: BorderRadius.circular(12),
+          //           ),
+          //           child: Row(
+          //             children: [
+          //               SizedBox(
+          //                 width: 15,
+          //               ),
+          //               Container(
+          //                 width: 40,
+          //                 height: 80,
+          //                 decoration: BoxDecoration(
+          //                   borderRadius: BorderRadius.circular(5),
+          //                   image: DecorationImage(
+          //                     image: AssetImage(
+          //                       'assets/icon_goverment.png',
+          //                     ),
+          //                   ),
+          //                 ),
+          //               ),
+          //               SizedBox(
+          //                 width: 12,
+          //               ),
+          //               Expanded(
+          //                 child: Column(
+          //                   crossAxisAlignment: CrossAxisAlignment.start,
+          //                   children: [
+          //                     Text(
+          //                       '${filteredDokumens[index].keterangan_belanja}',
+          //                       style: primaryTextStyle.copyWith(
+          //                         fontWeight: semiBold,
+          //                       ),
+          //                     ),
+          //                     Text(
+          //                       '${filteredDokumens[index].instansi.nama_instansi}',
+          //                       style: subtitleTextStyle.copyWith(
+          //                         fontWeight: light,
+          //                       ),
+          //                     ),
+          //                   ],
+          //                 ),
+          //               ),
+          //               Container (
+          //                 width: 23,
+          //                 height: 23,
+          //                 decoration: BoxDecoration(
+          //                   shape: BoxShape.circle,
+          //                   image: DecorationImage(image: AssetImage('assets/icon_information.png'),),
+          //                 ),
+          //               ),
+          //               SizedBox(
+          //                 width: 15,
+          //               ),
+          //             ],
+          //           ),
+          //         ),
+          //       );
+          //     }
+          // ),
 
-      );
+          );
     }
+
     return ListView(
       children: [
         header(),

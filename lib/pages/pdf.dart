@@ -9,7 +9,6 @@ import 'package:pdf/widgets.dart' as pw;
 import 'package:path_provider/path_provider.dart';
 
 class Pdf extends StatefulWidget {
-  Pdf({Key key}) : super(key: key) {}
   @override
   State<StatefulWidget> createState() {
     return _Pdf();
@@ -78,8 +77,8 @@ class _Pdf extends State<Pdf> {
   }
 
   Future<String> filePath() async {
-    Directory docsDir = await getExternalStorageDirectory();
-    String docsPath = docsDir.path;
+    Directory? docsDir = await getExternalStorageDirectory();
+    String docsPath = docsDir!.path;
     return docsPath;
   }
 

@@ -1,3 +1,4 @@
+import 'package:app_eblendrang/models/models.dart';
 import 'package:app_eblendrang/models/user_model.dart';
 import 'package:app_eblendrang/pages/widgets/instansi_title.dart';
 import 'package:app_eblendrang/providers/auth_provider.dart';
@@ -5,13 +6,13 @@ import 'package:flutter/material.dart';
 import 'package:app_eblendrang/themes.dart';
 import 'package:provider/provider.dart';
 
-class HomePage extends StatelessWidget{
+class HomePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     AuthProvider authProvider = Provider.of<AuthProvider>(context);
-    UserModel user = authProvider.user;
+    User user = authProvider.user;
 
-    Widget header(){
+    Widget header() {
       return Container(
         margin: EdgeInsets.only(
           top: 30,
@@ -25,14 +26,14 @@ class HomePage extends StatelessWidget{
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    'Hallo, ${user.name}',
+                    'Hallo, ${user.user.name}',
                     style: primaryTextStyle.copyWith(
                       fontSize: 24,
                       fontWeight: semiBold,
                     ),
                   ),
                   Text(
-                    '@${user.username}',
+                    '@${user.user.username}',
                     style: subtitleTextStyle.copyWith(
                       fontSize: 16,
                     ),
@@ -41,18 +42,20 @@ class HomePage extends StatelessWidget{
               ),
             ),
             GestureDetector(
-              onTap: (){
+              onTap: () {
                 Navigator.pushNamed(
                   context,
                   '/edit-profile',
                 );
               },
-              child: Container (
+              child: Container(
                 width: 54,
                 height: 54,
                 decoration: BoxDecoration(
                   shape: BoxShape.circle,
-                  image: DecorationImage(image: AssetImage('assets/icon_email.png'),),
+                  image: DecorationImage(
+                    image: AssetImage('assets/icon_email.png'),
+                  ),
                 ),
               ),
             ),
@@ -61,9 +64,9 @@ class HomePage extends StatelessWidget{
       );
     }
 
-    Widget titlePage(){
+    Widget titlePage() {
       return Container(
-        margin : EdgeInsets.only(
+        margin: EdgeInsets.only(
           top: 50,
           left: marginLogin,
           right: marginLogin,
@@ -79,10 +82,10 @@ class HomePage extends StatelessWidget{
       );
     }
 
-    Widget item(){
+    Widget item() {
       return Container(
         margin: EdgeInsets.only(
-          top : 30,
+          top: 30,
           left: marginLogin,
           right: marginLogin,
         ),
@@ -93,9 +96,9 @@ class HomePage extends StatelessWidget{
             InstansiTitle(),
           ],
         ),
-
       );
     }
+
     return ListView(
       children: [
         header(),

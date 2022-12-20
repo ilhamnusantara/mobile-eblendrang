@@ -6,65 +6,66 @@ import 'dart:convert';
 // String modelDokumenToJson(List<DokumenModel> data) =>
 //     json.encode(List<dynamic>.from(data.map((x) => x.toJson())));
 
-class DokumenModel{
-  int id_dokumen;
-  String keterangan_belanja;
-  String no_spk;
-  String no_bast;
-  String alamat;
-  Instansi instansi;
+class DokumenModel {
+  final int id_dokumen;
+  final String keterangan_belanja;
+  final String no_spk;
+  final String no_bast;
+  final String alamat;
+  final Instansi instansi;
   // DateTime createdAt;
   // DateTime updateAt;
 
   DokumenModel({
-    this.id_dokumen,
-    this.keterangan_belanja,
-    this.no_spk,
-    this.no_bast,
-    this.alamat,
-    this.instansi,
+    required this.id_dokumen,
+    required this.keterangan_belanja,
+    required this.no_spk,
+    required this.no_bast,
+    required this.alamat,
+    required this.instansi,
     // this.createdAt,
     // this.updateAt,
   });
 
-  DokumenModel.fromJson(Map<String, dynamic> json){
-    id_dokumen: json['id_dokumen'];
-    keterangan_belanja: json['keterangan_belanja'];
-    no_spk: json['no_spk'];
-    no_bast: json['no_bast'];
-    alamat: json['alamat'];
-    instansi: Instansi.fromJson(json['instansi']);
-    // createdAt: DateTime.parse(json["created_at"]),
-    // updateAt: DateTime.parse(json["updated_at"]),
-  }
+  factory DokumenModel.fromJson(Map<String, dynamic> json) => DokumenModel(
+        id_dokumen: json['id_dokumen'],
+        keterangan_belanja: json['keterangan_belanja'],
+        no_spk: json['no_spk'],
+        no_bast: json['no_bast'],
+        alamat: json['alamat'],
+        instansi: Instansi.fromJson(json['instansi']),
+        // createdAt: DateTime.parse(json["created_at"]),
+        // updateAt: DateTime.parse(json["updated_at"]),
+      );
 
   Map<String, dynamic> toJson() => {
-    "id_dokumen": id_dokumen,
-    "keterangan_belanja": keterangan_belanja,
-    "no_spk" : no_spk,
-    "no_bast" : no_bast,
-    "alamat" : alamat,
-    "instansi": instansi.toJson(),
-    // "created_at": createdAt.toString(),
-  };
+        "id_dokumen": id_dokumen,
+        "keterangan_belanja": keterangan_belanja,
+        "no_spk": no_spk,
+        "no_bast": no_bast,
+        "alamat": alamat,
+        "instansi": instansi.toJson(),
+        // "created_at": createdAt.toString(),
+      };
 }
 
-class Instansi{
-  int id_instansi;
-  String nama_instansi;
+class Instansi {
+  final int id_instansi;
+  final String nama_instansi;
 
   Instansi({
-    this.id_instansi,
-    this.nama_instansi,
+    required this.id_instansi,
+    required this.nama_instansi,
   });
 
   factory Instansi.fromJson(Map<String, dynamic> json) => Instansi(
-    nama_instansi: json["nama_instansi"],
-  );
+        nama_instansi: json["nama_instansi"],
+        id_instansi: json['id_instansi'],
+      );
 
   Map<String, dynamic> toJson() => {
-    "nama_instansi": nama_instansi,
-  };
+        "nama_instansi": nama_instansi,
+      };
 }
 
-class UninitializedDokumenModel extends DokumenModel {}
+//class UninitializedDokumenModel extends DokumenModel {}

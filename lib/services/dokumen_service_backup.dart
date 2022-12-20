@@ -2,25 +2,25 @@ import 'dart:convert';
 import 'package:app_eblendrang/models/dokumen_model_backup2.dart';
 import 'package:http/http.dart' as http;
 
-class DokumenService{
+class DokumenService {
   String baseUrl = 'http://e-blendrang.id/api';
-  String id;
-  Future<List<DokumenModel>> getDokumens() async{
+  late String id;
+  Future<List<DokumenModel>> getDokumens() async {
     var url = '$baseUrl/dokumens';
     var headers = {'Content-Type': 'application/json'};
     var response = await http.get(url, headers: headers);
 
     print(response.body);
-    if(response.statusCode == 200){
+    if (response.statusCode == 200) {
       List data = jsonDecode(response.body)['data'];
-      print (data);
+      print(data);
       List<DokumenModel> dokumens = [];
-      for(var item in data){
+      for (var item in data) {
         dokumens.add(DokumenModel.fromJson(item));
       }
       print(dokumens);
       return dokumens;
-    }else{
+    } else {
       throw Exception('Gagal Get Dokumen!');
     }
   }

@@ -1,16 +1,15 @@
-class InstansiModel{
-  int id_instansi;
-  String nama_instansi;
-  int data_null;
-
+class InstansiModel {
+  final int id_instansi;
+  final String nama_instansi;
+  final int data_null;
 
   InstansiModel({
-    this.id_instansi,
-    this.nama_instansi,
-    this.data_null,
+    required this.id_instansi,
+    required this.nama_instansi,
+    required this.data_null,
   });
 
-  factory InstansiModel.fromJson(Map<String, dynamic> json){
+  factory InstansiModel.fromJson(Map<String, dynamic> json) {
     return InstansiModel(
       id_instansi: json['id_instansi'],
       nama_instansi: json['nama_instansi'],
@@ -18,8 +17,8 @@ class InstansiModel{
     );
   }
 
-  Map<String, dynamic> toJson(){
-    final Map<String, dynamic> data= new Map<String, dynamic>();
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
     data['id_instansi'] = this.id_instansi;
     data['nama_instansi'] = this.nama_instansi;
     data['data_null'] = this.data_null;
