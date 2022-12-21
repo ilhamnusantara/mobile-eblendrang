@@ -8,6 +8,8 @@ import 'package:image_picker/image_picker.dart';
 import 'package:intl/intl.dart';
 import 'package:http/http.dart' as http;
 
+import '../models/models.dart';
+
 class DetailPage extends StatefulWidget {
   @override
   State<StatefulWidget> createState() {
@@ -17,7 +19,7 @@ class DetailPage extends StatefulWidget {
 
 class _DetailPage extends State<DetailPage> {
   var keterangan_belanja = "";
-  late DokumenModel dokumen;
+  late Dokumen dokumen;
   // List data = widget.dokumen;
   @override
   void initState() {
@@ -37,8 +39,8 @@ class _DetailPage extends State<DetailPage> {
     print(dokumenJson);
 
     setState(() {
-      dokumen = DokumenModel.fromJson(dokumenJson);
-      keterangan_belanja = dokumen.keterangan_belanja;
+      dokumen = Dokumen.fromJson(dokumenJson);
+      keterangan_belanja = dokumen.keteranganBelanja;
     });
 
     super.didChangeDependencies();
@@ -148,7 +150,7 @@ class _DetailPage extends State<DetailPage> {
                       readOnly: true,
                       style: primaryTextStyle,
                       decoration: InputDecoration(
-                        hintText: '' + (dokumen.instansi.nama_instansi),
+                        hintText: '' + (dokumen.instansi.namaInstansi),
                         // hintStyle: inputStyle,
                         enabledBorder: UnderlineInputBorder(
                           borderSide: BorderSide(
@@ -198,7 +200,7 @@ class _DetailPage extends State<DetailPage> {
                         child: TextFormField(
                       style: primaryTextStyle,
                       decoration: InputDecoration(
-                        hintText: '' + (dokumen.no_spk.toString()),
+                        hintText: '' + (dokumen.noSpk.toString()),
                         hintStyle: inputStyle,
                         enabledBorder: UnderlineInputBorder(
                           borderSide: BorderSide(
@@ -250,10 +252,10 @@ class _DetailPage extends State<DetailPage> {
                       style: primaryTextStyle,
                       readOnly: true,
                       onTap: () async {
-                        DateTime? dateSPK = dokumen.tanggal_spk;
+                        DateTime? dateSPK = dokumen.tglSpk;
                         dateSPK = await showDatePicker(
                           context: context,
-                          initialDate: dokumen.tanggal_spk,
+                          initialDate: dokumen.tglSpk,
                           firstDate: DateTime(2000),
                           lastDate: DateTime(2101),
                         );
@@ -311,7 +313,7 @@ class _DetailPage extends State<DetailPage> {
                         child: TextFormField(
                       style: primaryTextStyle,
                       decoration: InputDecoration(
-                        hintText: '' + (dokumen.no_bast.toString()),
+                        hintText: '' + (dokumen.noBast.toString()),
                         hintStyle: inputStyle,
                         enabledBorder: UnderlineInputBorder(
                           borderSide: BorderSide(
@@ -488,7 +490,7 @@ class _DetailPage extends State<DetailPage> {
               child: Column(
                 children: [
                   Text(
-                    '' + (dokumen.keterangan_belanja),
+                    '' + (dokumen.keteranganBelanja),
                     style: primaryTextStyle.copyWith(
                       fontSize: 25,
                       fontWeight: reguler,

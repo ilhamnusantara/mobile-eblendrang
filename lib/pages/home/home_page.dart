@@ -22,7 +22,7 @@ class _HomePageState extends State<HomePage> {
     _getInstansi();
   }
 
-  List<InstansiModel> allinstansis = [];
+  List<Instansi> allinstansis = [];
 
   Future<void> _getInstansi() async {
     try {
@@ -31,8 +31,7 @@ class _HomePageState extends State<HomePage> {
       if (response.statusCode == 200) {
         final data = jsonDecode(response.body)['data'] as List<dynamic>;
         setState(() {
-          allinstansis = [];
-          allinstansis = data.map((e) => InstansiModel.fromJson(e)).toList();
+          allinstansis = data.map((e) => Instansi.fromJson(e)).toList();
           // filteredDokumens = allDokumens;
           // _get = data;
           print(data);
@@ -168,7 +167,7 @@ class _HomePageState extends State<HomePage> {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Text(
-                            '${allinstansis[index].nama_instansi}',
+                            '${allinstansis[index].namaInstansi}',
                             style: primaryTextStyle.copyWith(
                               fontWeight: semiBold,
                             ),

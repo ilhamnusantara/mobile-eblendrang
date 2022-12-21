@@ -1,6 +1,6 @@
 part of 'models.dart';
 
-class User {
+class User extends Equatable {
   User({
     required this.accessToken,
     required this.tokenType,
@@ -39,9 +39,12 @@ class User {
         "expires_in": expiresIn,
         "user": user.toJson(),
       };
+
+  @override
+  List<Object?> get props => [accessToken, tokenType];
 }
 
-class UserClass {
+class UserClass extends Equatable {
   UserClass({
     required this.id,
     required this.name,
@@ -116,4 +119,7 @@ class UserClass {
         "updated_at": updatedAt.toIso8601String(),
         "instansi": instansi.toJson(),
       };
+
+  @override
+  List<Object?> get props => [id, name, username, idInstansi, email, status];
 }

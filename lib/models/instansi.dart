@@ -1,6 +1,6 @@
 part of 'models.dart';
 
-class Instansi {
+class Instansi extends Equatable {
   Instansi({
     required this.idInstansi,
     required this.namaInstansi,
@@ -8,12 +8,14 @@ class Instansi {
     required this.noTelp,
     required this.createdAt,
     required this.updatedAt,
+    required this.data_null,
   });
 
   final int idInstansi;
   final String namaInstansi;
   final String alamat;
   final String noTelp;
+  final int data_null;
   final dynamic createdAt;
   final dynamic updatedAt;
 
@@ -24,12 +26,14 @@ class Instansi {
     required String noTelp,
     required dynamic createdAt,
     required dynamic updatedAt,
+    required int data_null,
   }) =>
       Instansi(
         idInstansi: idInstansi ?? this.idInstansi,
         namaInstansi: namaInstansi ?? this.namaInstansi,
         alamat: alamat ?? this.alamat,
         noTelp: noTelp ?? this.noTelp,
+        data_null: data_null ?? this.data_null,
         createdAt: createdAt ?? this.createdAt,
         updatedAt: updatedAt ?? this.updatedAt,
       );
@@ -39,6 +43,7 @@ class Instansi {
         namaInstansi: json["nama_instansi"],
         alamat: json["alamat"],
         noTelp: json["no_telp"],
+        data_null: json['data_null'],
         createdAt: json["created_at"],
         updatedAt: json["updated_at"],
       );
@@ -51,4 +56,7 @@ class Instansi {
         "created_at": createdAt,
         "updated_at": updatedAt,
       };
+
+  @override
+  List<Object?> get props => [idInstansi, namaInstansi, alamat, noTelp];
 }

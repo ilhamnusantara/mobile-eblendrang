@@ -1,6 +1,6 @@
 part of 'models.dart';
 
-class Dokumen {
+class Dokumen extends Equatable {
   Dokumen({
     required this.idDokumen,
     required this.idJenis,
@@ -123,8 +123,12 @@ class Dokumen {
         status: json["status"],
         statusBelanja: json["status_belanja"],
         tahun: json["tahun"],
-        createdAt: DateTime.parse(json["created_at"]),
-        updatedAt: DateTime.parse(json["updated_at"]),
+        createdAt: (json["created_at"] == null)
+            ? DateTime.now()
+            : DateTime.parse(json["created_at"]),
+        updatedAt: (json["updated_at"] == null)
+            ? DateTime.now()
+            : DateTime.parse(json["updated_at"]),
         instansi: Instansi.fromJson(json["instansi"]),
       );
 
@@ -153,4 +157,7 @@ class Dokumen {
         "updated_at": updatedAt.toIso8601String(),
         "instansi": instansi.toJson(),
       };
+
+  @override
+  List<Object?> get props => [idDokumen, idJenis, idInstansi, noSpk, noBast];
 }
