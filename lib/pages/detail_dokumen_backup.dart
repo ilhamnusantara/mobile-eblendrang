@@ -70,7 +70,7 @@ class _DetailPage extends State<DetailPage> {
     };
     final url = "http://e-blendrang.id/api/updateFoto";
     final response = await http.put(
-      url,
+      Uri.parse(url),
       body: jsonEncode(data),
     );
     final message = jsonDecode(response.body);

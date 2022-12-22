@@ -22,7 +22,7 @@ class AuthService {
     });
 
     var response = await http.post(
-      url,
+      Uri.parse(url),
       headers: header,
       body: body,
     );
@@ -50,7 +50,7 @@ class AuthService {
     });
 
     var response = await http.post(
-      url,
+      Uri.parse(url),
       headers: header,
       body: body,
     );

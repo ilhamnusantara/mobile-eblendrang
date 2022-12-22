@@ -1,7 +1,7 @@
 // import 'dart:js';
 import 'dart:convert';
 import 'dart:math';
-
+import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:app_eblendrang/models/dokumen_model.dart';
 import 'package:app_eblendrang/models/models.dart';
 import 'package:app_eblendrang/models/user_model.dart';
@@ -154,6 +154,33 @@ class _DokumenPageState extends State<DokumenPage> {
           onChanged: _runFilter,
           decoration: const InputDecoration(
               labelText: 'Search Pekerjaan', suffixIcon: Icon(Icons.search)),
+        ),
+      );
+    }
+
+    Widget signInButton() {
+      return Container(
+        height: 50,
+        width: double.infinity,
+        margin: EdgeInsets.all(20),
+        child: TextButton(
+          onPressed: () {
+            filtered(context);
+          },
+          // (){Navigator.pushNamed(context, '/home');},
+          style: TextButton.styleFrom(
+            backgroundColor: backgroundColor12,
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(12),
+            ),
+          ),
+          child: Text(
+            'FILTER',
+            style: primaryTextStyle.copyWith(
+              fontSize: 16,
+              fontWeight: medium,
+            ),
+          ),
         ),
       );
     }
@@ -391,8 +418,27 @@ class _DokumenPageState extends State<DokumenPage> {
         header(),
         titlePage(),
         search(),
+        signInButton(),
         item(),
       ],
     );
   }
+}
+
+Future<AwesomeDialog> filtered(BuildContext context) async {
+  return AwesomeDialog(
+    context: context,
+    animType: AnimType.scale,
+    dialogType: DialogType.question,
+    body: Center(
+      child: Text(
+        'If the body is specified, then title and description will be ignored, this allows to 											further customize the dialogue.',
+        style: TextStyle(fontStyle: FontStyle.italic),
+      ),
+    ),
+    title: 'This is Ignored',
+    desc: 'This is also Ignored',
+    btnOkOnPress: () {},
+    btnCancelOnPress: () {},
+  )..show();
 }

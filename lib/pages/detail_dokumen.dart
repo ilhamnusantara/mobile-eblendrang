@@ -53,7 +53,7 @@ class _DetailPage extends State<DetailPage> {
   final _picker = ImagePicker();
 
   Future<void> _chooseImageFromCamera() async {
-    _pickedFile = await _picker.getImage(source: ImageSource.camera);
+    _pickedFile = (await _picker.getImage(source: ImageSource.camera))!;
     if (_pickedFile != null) {
       setState(() {
         _foto = File(_pickedFile.path);
@@ -70,7 +70,7 @@ class _DetailPage extends State<DetailPage> {
     };
     final url = "http://e-blendrang.id/api/updateFoto";
     final response = await http.put(
-      url,
+      Uri.parse(url),
       body: jsonEncode(data),
     );
     final message = jsonDecode(response.body);

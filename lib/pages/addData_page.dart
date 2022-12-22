@@ -116,7 +116,7 @@ class _AddData extends State<AddData> {
   late PickedFile _pickedFile;
   final _picker = ImagePicker();
   Future<void> _chooseImageFromCamera() async {
-    _pickedFile = await _picker.getImage(source: ImageSource.camera);
+    _pickedFile = (await _picker.getImage(source: ImageSource.camera))!;
     if (_pickedFile != null) {
       setState(() {
         _foto = File(_pickedFile.path);
