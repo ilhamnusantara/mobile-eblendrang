@@ -1,13 +1,13 @@
-import 'package:app_eblendrang/models/dokumen_model.dart';
+import 'package:app_eblendrang/models/models.dart';
 import 'package:app_eblendrang/services/dokumen_service.dart';
 import 'package:flutter/material.dart';
 
 class DokumenProvider with ChangeNotifier {
-  List<DokumenModel> _dokumens = [];
+  List<Instansi> _dokumens = [];
 
-  List<DokumenModel> get dokumens => _dokumens;
+  List<Instansi> get dokumens => _dokumens;
 
-  set dokumens(List<DokumenModel> dokumens) {
+  set dokumens(List<Instansi> dokumens) {
     _dokumens = dokumens;
     notifyListeners();
   }
@@ -15,9 +15,9 @@ class DokumenProvider with ChangeNotifier {
   //   return await DokumenService().getDokumens().toString();
   // }
 
-  Future<List<DokumenModel>> getDokumens() async {
+  Future<List<Instansi>> getDokumens() async {
     try {
-      List<DokumenModel> dokumens = await DokumenService().getDokumens();
+      List<Instansi> dokumens = await DokumenService().getDokumens();
       var _dokumens = dokumens;
       print(_dokumens);
       return _dokumens;

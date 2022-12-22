@@ -145,20 +145,20 @@ class _DetailPage extends State<DetailPage> {
                     SizedBox(
                       width: 16,
                     ),
-                    Expanded(
-                        child: TextFormField(
-                      readOnly: true,
-                      style: primaryTextStyle,
-                      decoration: InputDecoration(
-                        hintText: '' + (dokumen.instansi.namaInstansi),
-                        // hintStyle: inputStyle,
-                        enabledBorder: UnderlineInputBorder(
-                          borderSide: BorderSide(
-                            color: grayChoose,
-                          ),
-                        ),
-                      ),
-                    )),
+                    // Expanded(
+                    //     child: TextFormField(
+                    //   readOnly: true,
+                    //   style: primaryTextStyle,
+                    //   decoration: InputDecoration(
+                    //     hintText: '' + (dokumen.instansi.namaInstansi),
+                    //     // hintStyle: inputStyle,
+                    //     enabledBorder: UnderlineInputBorder(
+                    //       borderSide: BorderSide(
+                    //         color: grayChoose,
+                    //       ),
+                    //     ),
+                    //   ),
+                    // )),
                   ],
                 ),
               ),

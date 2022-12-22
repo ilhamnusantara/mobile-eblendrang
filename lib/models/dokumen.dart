@@ -24,7 +24,6 @@ class Dokumen extends Equatable {
     required this.tahun,
     required this.createdAt,
     required this.updatedAt,
-    required this.instansi,
   });
 
   final int idDokumen;
@@ -49,7 +48,6 @@ class Dokumen extends Equatable {
   final String tahun;
   final DateTime createdAt;
   final DateTime updatedAt;
-  final Instansi instansi;
 
   Dokumen copyWith({
     required int idDokumen,
@@ -74,7 +72,6 @@ class Dokumen extends Equatable {
     required String tahun,
     required DateTime createdAt,
     required DateTime updatedAt,
-    required Instansi instansi,
   }) =>
       Dokumen(
         idDokumen: idDokumen ?? this.idDokumen,
@@ -99,7 +96,6 @@ class Dokumen extends Equatable {
         tahun: tahun ?? this.tahun,
         createdAt: createdAt ?? this.createdAt,
         updatedAt: updatedAt ?? this.updatedAt,
-        instansi: instansi ?? this.instansi,
       );
 
   factory Dokumen.fromJson(Map<String, dynamic> json) => Dokumen(
@@ -129,7 +125,6 @@ class Dokumen extends Equatable {
         updatedAt: (json["updated_at"] == null)
             ? DateTime.now()
             : DateTime.parse(json["updated_at"]),
-        instansi: Instansi.fromJson(json["instansi"]),
       );
 
   Map<String, dynamic> toJson() => {
@@ -155,7 +150,6 @@ class Dokumen extends Equatable {
         "tahun": tahun,
         "created_at": createdAt.toIso8601String(),
         "updated_at": updatedAt.toIso8601String(),
-        "instansi": instansi.toJson(),
       };
 
   @override

@@ -12,16 +12,16 @@ class SpashScreenPage extends StatefulWidget {
 }
 
 class _SpashScreenPageState extends State<SpashScreenPage> {
-  @override
-  void initState() {
-    getInit();
-    super.initState();
-  }
+  // @override
+  // void initState() {
+  //   getInit();
+  //   super.initState();
+  // }
 
-  getInit() async {
-    await Provider.of<DokumenProvider>(context, listen: false).getDokumens();
-    // Navigator.pushNamed(context, '/sign-in');
-  }
+  // getInit() async {
+  //   await Provider.of<DokumenProvider>(context, listen: false).getDokumens();
+  //   // Navigator.pushNamed(context, '/sign-in');
+  // }
 
   @override
   Widget build(BuildContext context) {

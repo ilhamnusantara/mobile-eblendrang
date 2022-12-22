@@ -10,8 +10,10 @@ import 'package:app_eblendrang/pages/splash_page.dart';
 import 'package:app_eblendrang/pages/sign_in_page.dart';
 import 'package:app_eblendrang/providers/auth_provider.dart';
 import 'package:app_eblendrang/providers/dokumen_provider.dart';
+import 'package:app_eblendrang/services/dokumen_service.dart';
 import 'package:flutter/material.dart';
 import 'package:app_eblendrang/pages/splash_screen_page.dart';
+import 'package:app_eblendrang/blocs/blocs_exports.dart';
 import 'package:provider/provider.dart';
 import 'package:splashscreen/splashscreen.dart';
 
@@ -25,9 +27,8 @@ class MyApp extends StatelessWidget {
         ChangeNotifierProvider(
           create: (context) => AuthProvider(),
         ),
-        ChangeNotifierProvider(
-          create: (context) => DokumenProvider(),
-        ),
+        BlocProvider(
+            create: (_) => DokumenBloc(DokumenService())..add(LoadDokumen()))
       ],
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
@@ -41,6 +42,7 @@ class MyApp extends StatelessWidget {
           '/edit-profile': (context) => EditProfilePage(),
           '/addAll': (context) => AddData(),
           '/pdf': (context) => Pdf(),
+          '/dokumen-page': (context) => DokumenPage(),
           // '/coba' : (context) => coba(),
         },
       ),

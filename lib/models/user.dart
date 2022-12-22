@@ -55,7 +55,6 @@ class UserClass extends Equatable {
     required this.emailVerifiedAt,
     required this.createdAt,
     required this.updatedAt,
-    required this.instansi,
   });
 
   final int id;
@@ -67,7 +66,6 @@ class UserClass extends Equatable {
   final dynamic emailVerifiedAt;
   final DateTime createdAt;
   final DateTime updatedAt;
-  final Instansi instansi;
 
   UserClass copyWith({
     required int id,
@@ -79,7 +77,6 @@ class UserClass extends Equatable {
     required dynamic emailVerifiedAt,
     required DateTime createdAt,
     required DateTime updatedAt,
-    required Instansi instansi,
   }) =>
       UserClass(
         id: id ?? this.id,
@@ -91,7 +88,6 @@ class UserClass extends Equatable {
         emailVerifiedAt: emailVerifiedAt ?? this.emailVerifiedAt,
         createdAt: createdAt ?? this.createdAt,
         updatedAt: updatedAt ?? this.updatedAt,
-        instansi: instansi ?? this.instansi,
       );
 
   factory UserClass.fromJson(Map<String, dynamic> json) => UserClass(
@@ -104,7 +100,6 @@ class UserClass extends Equatable {
         emailVerifiedAt: json["email_verified_at"],
         createdAt: DateTime.parse(json["created_at"]),
         updatedAt: DateTime.parse(json["updated_at"]),
-        instansi: Instansi.fromJson(json["instansi"]),
       );
 
   Map<String, dynamic> toJson() => {
@@ -117,7 +112,6 @@ class UserClass extends Equatable {
         "email_verified_at": emailVerifiedAt,
         "created_at": createdAt.toIso8601String(),
         "updated_at": updatedAt.toIso8601String(),
-        "instansi": instansi.toJson(),
       };
 
   @override

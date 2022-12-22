@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'package:app_eblendrang/models/instansi_model.dart';
 import 'package:app_eblendrang/models/models.dart';
 import 'package:app_eblendrang/models/user_model.dart';
+import 'package:app_eblendrang/pages/page.dart';
 import 'package:app_eblendrang/pages/widgets/instansi_title.dart';
 import 'package:app_eblendrang/providers/auth_provider.dart';
 import 'package:flutter/material.dart';
@@ -10,37 +11,39 @@ import 'package:flutter/rendering.dart';
 import 'package:provider/provider.dart';
 import 'package:http/http.dart' as http;
 
+import '../../blocs/blocs_exports.dart';
+
 class HomePage extends StatefulWidget {
   @override
   State<HomePage> createState() => _HomePageState();
 }
 
 class _HomePageState extends State<HomePage> {
-  @override
-  void initState() {
-    super.initState();
-    _getInstansi();
-  }
+  // @override
+  // void initState() {
+  //   super.initState();
+  //   _getInstansi();
+  // }
 
-  List<Instansi> allinstansis = [];
+  // List<Instansi> allinstansis = [];
 
-  Future<void> _getInstansi() async {
-    try {
-      final response =
-          await http.get(Uri.parse("http://103.23.198.126/api/dokumenValue"));
-      if (response.statusCode == 200) {
-        final data = jsonDecode(response.body)['data'] as List<dynamic>;
-        setState(() {
-          allinstansis = data.map((e) => Instansi.fromJson(e)).toList();
-          // filteredDokumens = allDokumens;
-          // _get = data;
-          print(data);
-        });
-      }
-    } catch (e) {
-      print(e);
-    }
-  }
+  // Future<void> _getInstansi() async {
+  //   try {
+  //     final response =
+  //         await http.get(Uri.parse("http://103.23.198.126/api/dokumenValue"));
+  //     if (response.statusCode == 200) {
+  //       final data = jsonDecode(response.body)['data'] as List<dynamic>;
+  //       setState(() {
+  //         allinstansis = data.map((e) => Instansi.fromJson(e)).toList();
+  //         // filteredDokumens = allDokumens;
+  //         // _get = data;
+  //         print(data);
+  //       });
+  //     }
+  //   } catch (e) {
+  //     print(e);
+  //   }
+  // }
 
   @override
   Widget build(BuildContext context) {
@@ -124,72 +127,96 @@ class _HomePageState extends State<HomePage> {
           left: marginLogin,
           right: marginLogin,
         ),
-        child: ListView.builder(
-          shrinkWrap: true,
-          itemCount: allinstansis.length,
-          padding: new EdgeInsets.only(
-            top: 10,
-          ),
-          itemBuilder: (BuildContext context, index) {
-            return GestureDetector(
-              onTap: () {
-                Navigator.of(context).pushNamed('/detailDokumen',
-                    arguments: jsonEncode(allinstansis[index]));
-              },
-              child: new Card(
-                elevation: 12,
-                color: backgroundColor13,
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(12),
+        child:
+            BlocBuilder<DokumenBloc, DokumenState>(builder: (context, state) {
+          if (state is DokumenLoadingState) {
+            return CircularProgressIndicator();
+          } else if (state is DokumenLoadedState) {
+            List<Instansi> dokumen = state.dokumenList;
+            if (dokumen.isNotEmpty) {
+              return ListView.builder(
+                shrinkWrap: true,
+                itemCount: dokumen.length,
+                padding: new EdgeInsets.only(
+                  top: 10,
                 ),
-                child: Row(
-                  children: [
-                    SizedBox(
-                      width: 15,
-                    ),
-                    Container(
-                      width: 40,
-                      height: 80,
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(5),
-                        image: DecorationImage(
-                          image: AssetImage(
-                            'assets/icon_goverment.png',
-                          ),
-                        ),
+                itemBuilder: (BuildContext context, index) {
+                  return GestureDetector(
+                    onTap: () {
+                      Navigator.of(context).push(MaterialPageRoute(
+                          builder: (context) => DokumenInstansi(
+                                docList: dokumen[index].dokumenList,
+                                namaInstansi: dokumen[index].namaInstansi,
+                              )));
+                    },
+                    child: new Card(
+                      elevation: 12,
+                      color: backgroundColor13,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(12),
                       ),
-                    ),
-                    SizedBox(
-                      width: 15,
-                    ),
-                    Expanded(
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
+                      child: Row(
                         children: [
-                          Text(
-                            '${allinstansis[index].namaInstansi}',
-                            style: primaryTextStyle.copyWith(
-                              fontWeight: semiBold,
+                          SizedBox(
+                            width: 15,
+                          ),
+                          Container(
+                            width: 40,
+                            height: 80,
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(5),
+                              image: DecorationImage(
+                                image: AssetImage(
+                                  'assets/icon_goverment.png',
+                                ),
+                              ),
                             ),
                           ),
+                          SizedBox(
+                            width: 15,
+                          ),
+                          Expanded(
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(
+                                  '${dokumen[index].namaInstansi}',
+                                  style: primaryTextStyle.copyWith(
+                                    fontWeight: semiBold,
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                          Text(
+                            '${dokumen[index].data_null} Item',
+                            style: inputStyle.copyWith(
+                              fontSize: 12,
+                            ),
+                          ),
+                          SizedBox(
+                            width: 15,
+                          )
                         ],
                       ),
                     ),
-                    Text(
-                      '${allinstansis[index].data_null} Item',
-                      style: inputStyle.copyWith(
-                        fontSize: 12,
-                      ),
-                    ),
-                    SizedBox(
-                      width: 15,
-                    )
-                  ],
+                  );
+                },
+              );
+            } else {
+              return Center(
+                child: Text(
+                  "No Data",
+                  style: primaryTextStyle,
                 ),
-              ),
+              );
+            }
+          } else {
+            return const Center(
+              child: Text("ERROR"),
             );
-          },
-        ),
+          }
+        }),
       );
     }
 

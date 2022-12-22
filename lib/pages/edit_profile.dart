@@ -115,18 +115,18 @@ class EditProfilePage extends StatelessWidget {
                 fontSize: 14,
               ),
             ),
-            TextFormField(
-              readOnly: true,
-              decoration: InputDecoration(
-                hintText: user.user.instansi.namaInstansi,
-                hintStyle: subtitleTextStyle,
-                enabledBorder: UnderlineInputBorder(
-                  borderSide: BorderSide(
-                    color: grayChoose,
-                  ),
-                ),
-              ),
-            ),
+            // TextFormField(
+            //   readOnly: true,
+            //   decoration: InputDecoration(
+            //     hintText: user.user.instansi.namaInstansi,
+            //     hintStyle: subtitleTextStyle,
+            //     enabledBorder: UnderlineInputBorder(
+            //       borderSide: BorderSide(
+            //         color: grayChoose,
+            //       ),
+            //     ),
+            //   ),
+            // ),
           ],
         ),
       );
